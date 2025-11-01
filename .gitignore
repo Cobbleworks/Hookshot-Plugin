@@ -1,0 +1,23 @@
+# Compiled output
+target/
+*.jar
+!*-sources.jar
+!*-javadoc.jar
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Plugin data
+playerdata.yml
+
+# Maven
+dependency-reduced-pom.xml
