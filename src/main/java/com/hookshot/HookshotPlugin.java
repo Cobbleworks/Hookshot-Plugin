@@ -18,7 +18,9 @@ public class HookshotPlugin extends JavaPlugin {
         playerDataManager = new PlayerDataManager(this);
         
         // Register commands
-        getCommand("hookshot").setExecutor(new HookshotCommand(this, playerDataManager));
+        HookshotCommand hookshotCommand = new HookshotCommand(this, playerDataManager);
+        getCommand("hookshot").setExecutor(hookshotCommand);
+        getCommand("hookshot").setTabCompleter(hookshotCommand);
         
         // Register listeners
         getServer().getPluginManager().registerEvents(new FishingRodListener(this, playerDataManager), this);

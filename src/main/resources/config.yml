@@ -1,13 +1,10 @@
 # Hookshot Plugin Configuration
 
+# ===== DEFAULT VALUES =====
+# These are the default values for new players
+
 # Default range for the grappling hook (in blocks)
 default-range: 30.0
-
-# Minimum range a player can set
-min-range: 10.0
-
-# Maximum range a player can set
-max-range: 100.0
 
 # Speed at which the player is pulled to the hook location
 # Higher values = faster pull
@@ -17,7 +14,7 @@ pull-speed: 2.0
 # Higher values = more upward momentum
 vertical-boost: 0.3
 
-# Multiplier for the fishing hook velocity
+# Multiplier for the fishing hook velocity (how fast the hook is thrown)
 # Higher values = hook travels further/faster
 hook-velocity-multiplier: 2.0
 
@@ -26,3 +23,22 @@ play-sound: true
 
 # Show particle effects when hook pulls player
 show-particles: true
+
+# ===== SETTING LIMITS =====
+# Min/Max values that players can configure
+
+# Range limits (in blocks)
+min-range: 10.0
+max-range: 100.0
+
+# Pull speed limits
+min-pull-speed: 0.5
+max-pull-speed: 5.0
+
+# Vertical boost limits
+min-vertical-boost: 0.0
+max-vertical-boost: 1.5
+
+# Hook velocity limits (throw speed)
+min-hook-velocity: 1.0
+max-hook-velocity: 5.0

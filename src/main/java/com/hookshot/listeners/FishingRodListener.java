@@ -47,12 +47,9 @@ public class FishingRodListener implements Listener {
             return;
         }
 
-        // Get player's custom range
-        double range = playerDataManager.getRange(player);
-        
-        // Increase the velocity of the fishing hook for extended range
+        // Increase the velocity of the fishing hook using player's custom setting
         Vector direction = player.getLocation().getDirection();
-        double velocityMultiplier = plugin.getConfig().getDouble("hook-velocity-multiplier", 2.0);
+        double velocityMultiplier = playerDataManager.getHookVelocity(player);
         hook.setVelocity(direction.multiply(velocityMultiplier));
     }
 
@@ -96,24 +93,24 @@ public class FishingRodListener implements Listener {
         // Calculate the direction vector from player to hook
         Vector direction = hookLocation.toVector().subtract(playerLocation.toVector());
         
-        // Normalize and multiply by pull speed
-        double pullSpeed = plugin.getConfig().getDouble("pull-speed", 2.0);
+        // Normalize and multiply by player's custom pull speed
+        double pullSpeed = playerDataManager.getPullSpeed(player);
         direction.normalize().multiply(pullSpeed);
         
-        // Add upward momentum to prevent getting stuck in ground
-        double verticalBoost = plugin.getConfig().getDouble("vertical-boost", 0.3);
+        // Add upward momentum using player's custom vertical boost
+        double verticalBoost = playerDataManager.getVerticalBoost(player);
         direction.setY(direction.getY() + verticalBoost);
         
         // Apply velocity to player
         player.setVelocity(direction);
         
-        // Optional: Play sound effect
-        if (plugin.getConfig().getBoolean("play-sound", true)) {
+        // Optional: Play sound effect (per-player setting)
+        if (playerDataManager.isSoundEnabled(player)) {
             player.getWorld().playSound(playerLocation, org.bukkit.Sound.ENTITY_ENDER_DRAGON_FLAP, 1.0f, 1.5f);
         }
         
-        // Optional: Show particles
-        if (plugin.getConfig().getBoolean("show-particles", true)) {
+        // Optional: Show particles (per-player setting)
+        if (playerDataManager.isParticlesEnabled(player)) {
             player.getWorld().spawnParticle(
                 org.bukkit.Particle.CLOUD,
                 playerLocation,
