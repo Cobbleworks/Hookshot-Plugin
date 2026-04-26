@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="images/plugin-logo.png" alt="Hookshot Plugin" width="128" />
+</p>
 # Hookshot-Plugin
 
 Hookshot-Plugin transforms fishing rods into configurable grappling hooks, letting players move vertically and horizontally with per-player settings for range, velocity, and effects.
@@ -59,3 +62,4 @@ This project is licensed under the MIT License.
 
 - Spigot/Paper 1.19+
 - Java 17+
+
