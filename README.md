@@ -96,15 +96,15 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 ## **Screenshots**
 
-The screenshots below demonstrate the core features of the Hookshot plugin, including the grappling hook mechanics, player settings, particle effects, and extended range configuration.
+The screenshots below demonstrate the core features of the Hookshot plugin, including grappling across a lava dungeon and climbing a house in the jungle.
 
 <table>
   <tr>
-    <th>Hookshot Plugin - Grappling Hook</th>
-    <th>Hookshot Plugin - Building Climbing</th>
+    <th>Hookshot - Lava Dungeon Traversal</th>
+    <th>Hookshot - Jungle House Climbing</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-hookshot.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-hookshot.png" alt="Grappling Hook" width="450"></a></td>
-    <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-building-climbing.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-building-climbing.png" alt="Building Climbing" width="450"></a></td>
+    <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-lava-dungeon.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-lava-dungeon.png" alt="Lava Dungeon Traversal" width="450"></a></td>
+    <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-jungle-house.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-jungle-house.png" alt="Jungle House Climbing" width="450"></a></td>
   </tr>
 </table>
