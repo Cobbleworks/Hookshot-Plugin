@@ -100,19 +100,11 @@ The screenshots below demonstrate the core features of the Hookshot plugin, incl
 
 <table>
   <tr>
-    <th>Hookshot Plugin - Building Climbing</th>
     <th>Hookshot Plugin - Grappling Hook</th>
+    <th>Hookshot Plugin - Building Climbing</th>
   </tr>
   <tr>
-    <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-building-climbing.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-building-climbing.png" alt="Building Climbing" width="450"></a></td>
     <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-hookshot.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-hookshot.png" alt="Grappling Hook" width="450"></a></td>
-  </tr>
-  <tr>
-    <th>Hookshot Plugin - Particle Effects</th>
-    <th>Hookshot Plugin - Extended Range</th>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-particles.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-particles.png" alt="Particle Effects" width="450"></a></td>
-    <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-range.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-range.png" alt="Extended Range" width="450"></a></td>
+    <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-building-climbing.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-building-climbing.png" alt="Building Climbing" width="450"></a></td>
   </tr>
 </table>
