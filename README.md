@@ -10,15 +10,15 @@
   <a href="https://github.com/Cobbleworks/Hookshot-Plugin/releases"><img src="https://img.shields.io/github/v/release/Cobbleworks/Hookshot-Plugin?include_prereleases&style=flat-square&color=4CAF50" alt="Latest Release"></a>&nbsp;&nbsp;<a href="https://github.com/Cobbleworks/Hookshot-Plugin/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Java-17+-orange?style=flat-square" alt="Java Version">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Minecraft-1.19+-green?style=flat-square" alt="Minecraft Version">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Platform-Spigot%2FPaper-yellow?style=flat-square" alt="Platform">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square" alt="Status">&nbsp;&nbsp;<a href="https://github.com/Cobbleworks/Hookshot-Plugin/issues"><img src="https://img.shields.io/github/issues/Cobbleworks/Hookshot-Plugin?style=flat-square&color=orange" alt="Open Issues"></a>
 </p>
 
-Hookshot is an open-source Minecraft plugin that transforms fishing rods into fully configurable grappling hooks. When grappling mode is enabled, casting a fishing rod launches the hook at the player's configured throw velocity -- and upon hitting a block, the player is immediately pulled toward the hook's landing position with a configurable pull speed and vertical boost. When the hook catches a non-player living entity, the entity is pulled toward the player instead. Every setting -- range, pull speed, throw velocity, vertical boost, sound, and particles -- is independently configurable per player and persisted automatically in `playerdata.yml` across server restarts.
+Hookshot is an open-source Minecraft plugin that transforms fishing rods into fully configurable grappling hooks. When grappling mode is enabled, casting a fishing rod launches the hook at the player's configured throw velocity - and upon hitting a block, the player is immediately pulled toward the hook's landing position with a configurable pull speed and vertical boost. When the hook catches a non-player living entity, the entity is pulled toward the player instead. Every setting - range, pull speed, throw velocity, vertical boost, sound, and particles - is independently configurable per player and persisted automatically in `playerdata.yml` across server restarts.
 
 Originally built for custom server gameplay, Hookshot is designed to be straightforward to install and intuitive to use. No dependencies are required, configuration is minimal, and players can fine-tune their own settings through a single command without any admin involvement.
 
 ### **Core Features**
 
-- **Toggle Mode:** Each player independently enables or disables grappling hook mode -- casting while disabled behaves as a normal fishing rod with no side effects
+- **Toggle Mode:** Each player independently enables or disables grappling hook mode - casting while disabled behaves as a normal fishing rod with no side effects
 - **Block Grappling:** When the hook lands on a block within range, the player is pulled toward that position immediately with velocity proportional to their configured pull speed and vertical boost
-- **Entity Grappling:** When the hook catches a non-player living entity (mob, animal, etc.), the entity is pulled toward the player -- useful for mob retrieval and custom gameplay scenarios
+- **Entity Grappling:** When the hook catches a non-player living entity (mob, animal, etc.), the entity is pulled toward the player - useful for mob retrieval and custom gameplay scenarios
 - **Configurable Hook Velocity:** Adjustable throw multiplier (1.0-5.0) controls how fast and far the hook travels through the air before landing
 - **Configurable Pull Speed:** Adjustable pull speed (0.5-5.0) controls how quickly the player is moved toward the hook landing point
 - **Vertical Boost:** Optional upward momentum (0.0-1.5) added to the pull direction, helping players clear ledges and obstacles naturally
@@ -34,7 +34,7 @@ Originally built for custom server gameplay, Hookshot is designed to be straight
 - **Server Software:** `Spigot`, `Paper`, `Purpur`, `CraftBukkit`
 - **Minecraft Versions:** `1.19` and higher
 - **Java Requirements:** `Java 17+`
-- **Dependencies:** None -- fully self-contained, no external plugins required
+- **Dependencies:** None - fully self-contained, no external plugins required
 
 ## **Table of Contents**
 
@@ -44,8 +44,8 @@ Originally built for custom server gameplay, Hookshot is designed to be straight
     - [First Launch & Configuration](#first-launch--configuration)
     - [Verifying Installation](#verifying-installation)
 2. [Configuration](#configuration)
-    - [config.yml -- Server Defaults & Limits](#configyml--server-defaults--limits)
-    - [playerdata.yml -- Per-Player Storage](#playerdatayml--per-player-storage)
+    - [config.yml - Server Defaults & Limits](#configyml--server-defaults--limits)
+    - [playerdata.yml - Per-Player Storage](#playerdatayml--per-player-storage)
 3. [How It Works](#how-it-works)
     - [Block Grappling](#block-grappling)
     - [Entity Grappling](#entity-grappling)
@@ -77,7 +77,7 @@ No additional plugins or libraries are needed. Hookshot has zero external depend
 1. Download the latest `Hookshot-x.x.x.jar` from the [Releases](https://github.com/Cobbleworks/Hookshot-Plugin/releases) page
 2. **Stop your server completely** before placing any files
 3. Copy the `.jar` into your server's `plugins/` directory
-4. Start the server -- Hookshot generates its configuration folder automatically on first boot
+4. Start the server - Hookshot generates its configuration folder automatically on first boot
 
 ### **First Launch & Configuration**
 
@@ -91,22 +91,22 @@ plugins/
 ```
 
 - **`config.yml`** contains two sections: the server-wide default values applied to every new player and the minimum/maximum limits that cap what players can configure for themselves. Edit this file to tune the plugin for your server, then restart to apply changes.
-- **`playerdata.yml`** is written and read by the plugin automatically. It stores each player's personal settings (range, speed, boost, velocity, sound, particles, enabled state) keyed by UUID. Do not edit this file manually -- any changes will be overwritten on the next save.
+- **`playerdata.yml`** is written and read by the plugin automatically. It stores each player's personal settings (range, speed, boost, velocity, sound, particles, enabled state) keyed by UUID. Do not edit this file manually - any changes will be overwritten on the next save.
 
 After editing `config.yml` and restarting, only **new players** and players who run `/hookshot reset` will receive the updated defaults. Existing player data is not automatically migrated.
 
 ### **Verifying Installation**
 
-- Run `/plugins` in-game -- `Hookshot` should appear green in the list
+- Run `/plugins` in-game - `Hookshot` should appear green in the list
 - Run `/version Hookshot` to confirm the installed version matches the release you downloaded
-- Hold a fishing rod, run `/hookshot toggle`, and right-click to cast toward a block -- you should be pulled toward it
+- Hold a fishing rod, run `/hookshot toggle`, and right-click to cast toward a block - you should be pulled toward it
 - If the plugin fails to load, check the server console for `Hookshot` error messages (common causes: wrong Java version, corrupt JAR, or an unsupported API version)
 
 ## **Configuration**
 
-### **config.yml -- Server Defaults & Limits**
+### **config.yml - Server Defaults & Limits**
 
-`plugins/Hookshot/config.yml` is divided into two sections. The **default values** define what every new player receives and what `/hookshot reset` restores. The **setting limits** cap the values players are permitted to configure using commands -- any attempt to set a value outside these bounds is rejected with an error message.
+`plugins/Hookshot/config.yml` is divided into two sections. The **default values** define what every new player receives and what `/hookshot reset` restores. The **setting limits** cap the values players are permitted to configure using commands - any attempt to set a value outside these bounds is rejected with an error message.
 
 ```yaml
 # ===== DEFAULT VALUES =====
@@ -128,7 +128,7 @@ min-hook-velocity: 1.0
 max-hook-velocity: 5.0
 ```
 
-**Default Values** -- applied to new players and restored by `/hookshot reset`:
+**Default Values** - applied to new players and restored by `/hookshot reset`:
 
 | Key | Default | Description |
 |-----|---------|-------------|
@@ -139,7 +139,7 @@ max-hook-velocity: 5.0
 | `play-sound` | `true` | Whether sound is enabled by default |
 | `show-particles` | `true` | Whether particles are enabled by default |
 
-**Setting Limits** -- hard bounds on what players can configure:
+**Setting Limits** - hard bounds on what players can configure:
 
 | Key | Default | Description |
 |-----|---------|-------------|
@@ -152,9 +152,9 @@ max-hook-velocity: 5.0
 | `min-hook-velocity` | `1.0` | Minimum hook throw velocity a player may set |
 | `max-hook-velocity` | `5.0` | Maximum hook throw velocity a player may set |
 
-> **Important:** Config changes only apply after a server restart. Existing player settings in `playerdata.yml` are never automatically updated -- only new players or players who run `/hookshot reset` receive the new defaults.
+> **Important:** Config changes only apply after a server restart. Existing player settings in `playerdata.yml` are never automatically updated - only new players or players who run `/hookshot reset` receive the new defaults.
 
-### **playerdata.yml -- Per-Player Storage**
+### **playerdata.yml - Per-Player Storage**
 
 This file is generated and maintained entirely by the plugin. It stores one entry per player, keyed by their UUID:
 
@@ -170,7 +170,7 @@ players:
     particles-enabled: true
 ```
 
-The file is loaded on plugin startup and on every player join. It is saved automatically on every setting change and on plugin shutdown (`onDisable`). There is no manual reload command -- the data is always in sync with what the plugin has in memory.
+The file is loaded on plugin startup and on every player join. It is saved automatically on every setting change and on plugin shutdown (`onDisable`). There is no manual reload command - the data is always in sync with what the plugin has in memory.
 
 ## **How It Works**
 
@@ -221,16 +221,16 @@ All commands require the `hookshot.use` permission, which is granted to all play
 |---------|------------|-------------|
 | `/hookshot` | `hookshot.use` | Toggle grappling hook mode on or off (shorthand for `toggle`) |
 | `/hookshot toggle` | `hookshot.use` | Toggle grappling hook mode on or off |
-| `/hookshot range <value>` | `hookshot.settings` | Set your hook range in blocks -- must be within server min/max |
-| `/hookshot speed <value>` | `hookshot.settings` | Set your pull speed -- controls how fast you are pulled to the hook |
-| `/hookshot boost <value>` | `hookshot.settings` | Set your vertical boost -- upward momentum applied on every pull |
-| `/hookshot velocity <value>` | `hookshot.settings` | Set your hook throw velocity -- controls how far the hook is launched |
+| `/hookshot range <value>` | `hookshot.settings` | Set your hook range in blocks - must be within server min/max |
+| `/hookshot speed <value>` | `hookshot.settings` | Set your pull speed - controls how fast you are pulled to the hook |
+| `/hookshot boost <value>` | `hookshot.settings` | Set your vertical boost - upward momentum applied on every pull |
+| `/hookshot velocity <value>` | `hookshot.settings` | Set your hook throw velocity - controls how far the hook is launched |
 | `/hookshot sound` | `hookshot.settings` | Toggle your personal sound effects on or off |
 | `/hookshot particles` | `hookshot.settings` | Toggle your personal particle effects on or off |
 | `/hookshot reset` | `hookshot.use` | Reset all your settings to the current server default values |
 | `/hookshot info` | `hookshot.use` | Display all of your current hookshot settings in chat |
 
-**Aliases:** `/hook`, `/grapple` -- all subcommands work with these aliases
+**Aliases:** `/hook`, `/grapple` - all subcommands work with these aliases
 
 ### **Setting Details**
 
@@ -256,7 +256,7 @@ Example: `/hookshot boost 0.5`
 ---
 
 **`/hookshot velocity <value>`**
-Controls how fast the fishing hook is launched when you cast. Higher values throw the hook further in less time, effectively increasing your usable range in practice. This is separate from your range limit -- a hook can travel fast but still be cancelled if it lands beyond your range setting.
+Controls how fast the fishing hook is launched when you cast. Higher values throw the hook further in less time, effectively increasing your usable range in practice. This is separate from your range limit - a hook can travel fast but still be cancelled if it lands beyond your range setting.
 
 Example: `/hookshot velocity 3.0`
 
@@ -311,7 +311,7 @@ To restrict hookshot to specific player groups, revoke `hookshot.use` from the d
 
 ## **Building from Source**
 
-Hookshot uses **Apache Maven** as its build system. The plugin is built as a fat JAR using the Maven Shade Plugin -- no runtime dependencies need to be placed on the server.
+Hookshot uses **Apache Maven** as its build system. The plugin is built as a fat JAR using the Maven Shade Plugin - no runtime dependencies need to be placed on the server.
 
 **Requirements:**
 - Java 17 or newer
@@ -349,7 +349,7 @@ src/main/
 
 ## **License**
 
-This project is licensed under the **MIT License** -- see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ## **Screenshots**
 
