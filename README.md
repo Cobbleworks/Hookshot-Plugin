@@ -1,7 +1,7 @@
 <p align="center">
   <img src="images/plugin-logo.png" alt="Hookshot Plugin" width="180" />
 </p>
-<h1 align="center">Hookshot</h1>
+<h1 align="center">Hookshot Plugin</h1>
 <p align="center">
   <b>Transform fishing rods into configurable grappling hooks.</b><br>
   <b>Per-player settings for range, velocity, sound, particles, and vertical boost.</b>
@@ -357,22 +357,26 @@ The screenshots below showcase Hookshot across a variety of builds and biomes, d
 
 <table>
   <tr>
-    <th>Hookshot - Battleship Bowser Climb</th>
-    <th>Hookshot - Range Configuration</th>
-    <th>Hookshot - Industry Crane Container</th>
+    <th>Hookshot Plugin - Battleship Bowser Climb</th>
+    <th>Hookshot Plugin - Range Configuration</th>
   </tr>
   <tr>
     <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-battleship-bowser.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-battleship-bowser.png" alt="Battleship Bowser Climb" width="450"></a></td>
     <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-range-configuration.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-range-configuration.png" alt="Range Configuration" width="450"></a></td>
+  </tr>
+  <tr>
+    <th>Hookshot Plugin - Industry Crane Container</th>
+    <th>Hookshot Plugin - Desert Town Ascent</th>
+  </tr>
+  <tr>
     <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-industry-crane.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-industry-crane.png" alt="Industry Crane Container" width="450"></a></td>
-  </tr>
-  <tr>
-    <th>Hookshot - Desert Town Ascent</th>
-    <th>Hookshot - Lava Dungeon Traversal</th>
-    <th>Hookshot - Jungle House Climbing</th>
-  </tr>
-  <tr>
     <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-desert-town.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-desert-town.png" alt="Desert Town Ascent" width="450"></a></td>
+  </tr>
+  <tr>
+    <th>Hookshot Plugin - Lava Dungeon Traversal</th>
+    <th>Hookshot Plugin - Jungle House Climbing</th>
+  </tr>
+  <tr>
     <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-lava-dungeon.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-lava-dungeon.png" alt="Lava Dungeon Traversal" width="450"></a></td>
     <td><a href="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-jungle-house.png" target="_blank" rel="noopener noreferrer"><img src="https://github.com/Cobbleworks/Hookshot-Plugin/raw/main/images/screenshot-jungle-house.png" alt="Jungle House Climbing" width="450"></a></td>
   </tr>
