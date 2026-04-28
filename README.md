@@ -85,9 +85,9 @@ On the first server start after installation, Hookshot creates the following dir
 
 ```
 plugins/
-+---- Hookshot/
-    +---- config.yml        <- Server-wide defaults and per-player limits
-    +---- playerdata.yml    <- Per-player settings (auto-managed, do not edit manually)
+└── Hookshot/
+    ├── config.yml       - Server-wide defaults and per-player limits
+    └── playerdata.yml   - Per-player settings (auto-managed, do not edit manually)
 ```
 
 - **`config.yml`** contains two sections: the server-wide default values applied to every new player and the minimum/maximum limits that cap what players can configure for themselves. Edit this file to tune the plugin for your server, then restart to apply changes.
@@ -334,17 +334,17 @@ The output JAR is written to `target/Hookshot-x.x.x.jar`. Copy it into your serv
 
 ```
 src/main/
-+---- java/com/hookshot/
-|   +---- HookshotPlugin.java          <- Plugin entry point (onEnable / onDisable)
-|   +---- commands/
-|   |   +---- HookshotCommand.java     <- All /hookshot subcommands + tab completion
-|   +---- listeners/
-|   |   +---- FishingRodListener.java  <- Grappling physics (launch, hit, fish events)
-|   +---- managers/
-|       +---- PlayerDataManager.java   <- Per-player data storage and config access
-+---- resources/
-    +---- config.yml                   <- Default server configuration
-    +---- plugin.yml                   <- Plugin metadata, commands, permissions
+├── java/com/hookshot/
+│   ├── HookshotPlugin.java          - Plugin entry point (onEnable / onDisable)
+│   ├── commands/
+│   │   └── HookshotCommand.java     - All /hookshot subcommands + tab completion
+│   ├── listeners/
+│   │   └── FishingRodListener.java  - Grappling physics (launch, hit, fish events)
+│   └── managers/
+│       └── PlayerDataManager.java   - Per-player data storage and config access
+└── resources/
+    ├── config.yml                   - Default server configuration
+    └── plugin.yml                   - Plugin metadata, commands, permissions
 ```
 
 ## **License**
