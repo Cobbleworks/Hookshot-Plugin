@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Converts valid fishing-hook impacts into bounded player or entity pulls.
+ */
 public class FishingRodListener implements Listener {
 
     private final HookshotPlugin plugin;

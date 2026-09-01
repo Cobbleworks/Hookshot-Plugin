@@ -1,23 +1,14 @@
-# Compiled output
+# Maven build output
 target/
-*.jar
-!*-sources.jar
-!*-javadoc.jar
 
-# IDE files
+# IDE metadata
 .idea/
-*.iml
 .vscode/
-.settings/
-.project
+*.iml
 .classpath
+.project
+.settings/
 
-# OS files
+# Operating-system files
 .DS_Store
 Thumbs.db
-
-# Plugin data
-playerdata.yml
-
-# Maven
-dependency-reduced-pom.xml

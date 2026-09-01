@@ -5,6 +5,9 @@ import com.hookshot.listeners.FishingRodListener;
 import com.hookshot.managers.PlayerDataManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Loads hook defaults and registers player data, commands, and fishing events.
+ */
 public class HookshotPlugin extends JavaPlugin {
 
     private PlayerDataManager playerDataManager;
