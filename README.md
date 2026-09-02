@@ -1,9 +1,10 @@
 <p align="center">
-  <img src="images/plugin-logo.png" alt="Hookshot Plugin" width="200" height="200" />
+  <img src="images/plugin-banner.png" alt="Cobbleworks - Hookshot Plugin banner" width="818" />
 </p>
-<h1 align="center">Hookshot Plugin</h1>
+<h1 align="center">Cobbleworks - Hookshot Plugin</h1>
 <p align="center">
-  <b>Turn fishing rods into configurable grappling hooks for players and mobs.</b>
+  <b>Turn ordinary fishing rods into configurable grappling hooks for exploration and mobility.</b><br>
+  <b>Pull toward blocks, retrieve nearby mobs, and tune every player's range, speed, boost, and effects.</b>
 </p>
 <p align="center">
   <a href="https://github.com/Cobbleworks/Hookshot-Plugin/releases"><img src="https://img.shields.io/github/v/release/Cobbleworks/Hookshot-Plugin?include_prereleases&style=flat-square&color=4CAF50" alt="Latest Release"></a>&nbsp;&nbsp;<a href="https://github.com/Cobbleworks/Hookshot-Plugin/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Java-17+-orange?style=flat-square" alt="Java Version">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Minecraft-1.19+-green?style=flat-square" alt="Minecraft Version">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Platform-Spigot%2FPaper-yellow?style=flat-square" alt="Platform">&nbsp;&nbsp;<a href="https://github.com/Cobbleworks/Hookshot-Plugin/issues"><img src="https://img.shields.io/github/issues/Cobbleworks/Hookshot-Plugin?style=flat-square&color=orange" alt="Open Issues"></a>
@@ -11,7 +12,7 @@
 
 Hookshot gives each player a grappling mode for ordinary fishing rods. Hooks that strike a block pull the player toward the impact point; hooks that catch a non-player living entity pull that entity toward the player. Range, speed, boost, effects, and throw velocity are stored per player.
 
-### **Core Features**
+## **Core Features**
 
 - Pull toward blocks or retrieve non-player living entities
 - Per-player range, pull speed, vertical boost, and hook velocity
@@ -20,7 +21,7 @@ Hookshot gives each player a grappling mode for ordinary fishing rods. Hooks tha
 - Persistent player settings in `playerdata.yml`
 - No external dependencies
 
-### **Supported Platforms**
+## **Supported Platforms**
 
 - **Server software:** Spigot, Paper, Purpur, and compatible forks
 - **Minecraft:** 1.19 or newer
@@ -29,16 +30,20 @@ Hookshot gives each player a grappling mode for ordinary fishing rods. Hooks tha
 
 ## **Table of Contents**
 
-1. [Getting Started](#getting-started)
-2. [Third-Party Plugins](#third-party-plugins)
-3. [How It Works](#how-it-works)
-4. [Configuration](#configuration)
-5. [Commands](#commands)
-6. [Permissions](#permissions)
-7. [Data and Operational Notes](#data-and-operational-notes)
-8. [Building from Source](#building-from-source)
-9. [License](#license)
-10. [Screenshots](#screenshots)
+1. [Core Features](#core-features)
+2. [Supported Platforms](#supported-platforms)
+3. [Getting Started](#getting-started)
+4. [Third-Party Plugins](#third-party-plugins)
+5. [How It Works](#how-it-works)
+   - [Block Grappling](#block-grappling)
+   - [Entity Grappling](#entity-grappling)
+6. [Configuration](#configuration)
+7. [Commands](#commands)
+8. [Permissions](#permissions)
+9. [Data and Operational Notes](#data-and-operational-notes)
+10. [Building from Source](#building-from-source)
+11. [License](#license)
+12. [Screenshots](#screenshots)
 
 ## **Getting Started**
 
@@ -49,6 +54,8 @@ Hookshot gives each player a grappling mode for ordinary fishing rods. Hooks tha
 5. Cast at a block within range to test the pull.
 
 When grappling mode is disabled, fishing rods retain their normal behavior.
+
+For a comfortable first setup, keep the default range and speed, practice on a low structure, and use `/hookshot info` before changing values. The movement is applied as player velocity, so fall damage, protected regions, and server anti-cheat settings still behave according to the rest of the server configuration.
 
 ## **Third-Party Plugins**
 
