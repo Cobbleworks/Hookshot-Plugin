@@ -1,44 +1,100 @@
-# Hookshot Plugin Configuration
+# Hookshot - Grapple Harness configuration
+#
+# Distances are in blocks. Speeds and accelerations are in blocks per tick
+# (20 ticks = 1 second, so 1.0 block/tick = 20 blocks/second).
+# Use /hookshot reload after editing.
 
-# ===== DEFAULT VALUES =====
-# These are the default values for new players
+# ===== HARNESS ITEM =====
+harness:
+  # Leggings material used for the harness. Leather leggings can be tinted with "color".
+  material: LEATHER_LEGGINGS
+  # Hex color for leather harnesses (ignored for other materials).
+  color: "#3B2F2F"
+  name: "Grapple Harness"
 
-# Default range for the grappling hook (in blocks)
-default-range: 30.0
+# ===== CRAFTING RECIPE =====
+recipe:
+  enabled: true
+  # Shaped recipe, up to 3 rows of up to 3 characters. A space is an empty slot.
+  shape:
+    - "HCH"
+    - "ILI"
+    - "W W"
+  ingredients:
+    H: TRIPWIRE_HOOK      # the two anchor hooks
+    C: IRON_CHAIN         # cable
+    I: IRON_INGOT
+    L: LEATHER_LEGGINGS   # the harness base
+    W: WIND_CHARGE        # gas canisters
 
-# Speed at which the player is pulled to the hook location
-# Higher values = faster pull
-pull-speed: 2.0
+# ===== HOOKS =====
+hooks:
+  # Maximum distance a hook can be fired.
+  range: 40.0
+  # How many hooks can be out at once. Firing another replaces the oldest.
+  max-hooks: 2
+  # How fast a fired hook travels (blocks per tick).
+  travel-speed: 4.0
+  # Minimum ticks between two shots.
+  fire-cooldown-ticks: 4
+  # Allow hooking mobs, vehicles, and other non-player entities.
+  hook-entities: true
+  # Allow hooking other players.
+  hook-players: false
+  # Hooks retract automatically after standing on the ground this many ticks (0 = never).
+  auto-retract-ground-ticks: 40
 
-# Vertical boost to help player get over obstacles
-# Higher values = more upward momentum
-vertical-boost: 0.3
+# ===== ROPE =====
+rope:
+  # Shortest length a rope can be reeled to.
+  min-length: 1.5
+  # How much the rope shortens per tick while reeling.
+  reel-speed: 0.6
+  # Acceleration toward the anchor while reeling.
+  reel-acceleration: 0.15
+  # Block used to render the rope, and its thickness in blocks.
+  block: GRAY_CONCRETE
+  width: 0.05
 
-# Multiplier for the fishing hook velocity (how fast the hook is thrown)
-# Higher values = hook travels further/faster
-hook-velocity-multiplier: 2.0
+# ===== MOVEMENT =====
+movement:
+  # Velocity kept per tick while on a rope or carrying momentum (vanilla air is 0.91).
+  air-drag: 0.995
+  # Air control from W/A/S/D while swinging. Momentum flight after a release gets half.
+  steer-acceleration: 0.04
+  # Hard speed cap.
+  max-speed: 3.0
+  # How long momentum is carried after letting go, before vanilla physics take over.
+  momentum-ticks: 40
 
-# Play sound when hook pulls player
-play-sound: true
+# ===== GAS =====
+gas:
+  capacity: 100.0
+  # Gas used per tick while reeling.
+  reel-cost: 0.5
+  # Gas burst: press jump in mid-air with no hooks out.
+  burst-enabled: true
+  burst-cost: 20.0
+  burst-power: 1.1
+  burst-cooldown-ticks: 10
+  # Gas refills while standing on the ground, after a short delay.
+  regen-per-tick: 1.0
+  regen-delay-ticks: 20
 
-# Show particle effects when hook pulls player
-show-particles: true
+# ===== COMBAT =====
+combat:
+  # Melee hits deal bonus damage when the attacker is moving fast.
+  momentum-damage: true
+  # Speed (blocks/tick) above which the bonus starts. Sprinting is about 0.28.
+  speed-threshold: 0.7
+  # Bonus damage per block/tick above the threshold (0.6 = +60%).
+  bonus-per-speed: 0.6
+  # Maximum bonus (1.0 = double damage).
+  max-bonus: 1.0
+  # Fall damage multiplier while wearing the harness (0 = no fall damage).
+  fall-damage-multiplier: 0.5
 
-# ===== SETTING LIMITS =====
-# Min/Max values that players can configure
-
-# Range limits (in blocks)
-min-range: 10.0
-max-range: 100.0
-
-# Pull speed limits
-min-pull-speed: 0.5
-max-pull-speed: 5.0
-
-# Vertical boost limits
-min-vertical-boost: 0.0
-max-vertical-boost: 1.5
-
-# Hook velocity limits (throw speed)
-min-hook-velocity: 1.0
-max-hook-velocity: 5.0
+# ===== EFFECTS =====
+effects:
+  sounds: true
+  particles: true

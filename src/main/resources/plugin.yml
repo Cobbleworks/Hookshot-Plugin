@@ -1,24 +1,30 @@
 name: Hookshot
 version: ${project.version}
 main: com.hookshot.HookshotPlugin
-api-version: 1.19
+api-version: '26.2'
 author: Cobbleworks
 website: https://github.com/Cobbleworks/Hookshot-Plugin
-description: Transform your fishing rod into a grappling hook!
+description: A wearable grapple harness with rope-swing physics.
 
 commands:
   hookshot:
-    description: Manage your grappling hook settings
-    usage: /hookshot [toggle|range|speed|boost|velocity|sound|particles|reset|info]
+    description: Grapple harness help and administration
+    usage: /hookshot [help|give|reload]
     aliases: [hook, grapple]
 
 permissions:
   hookshot.use:
-    description: Allow player to use the grappling hook
+    description: Allows using a worn grapple harness
     default: true
-  hookshot.settings:
-    description: Allow player to configure their hookshot settings
-    default: true
-  hookshot.admin:
-    description: Administrative access to hookshot features
+  hookshot.give:
+    description: Allows giving grapple harnesses with /hookshot give
     default: op
+  hookshot.reload:
+    description: Allows reloading the configuration with /hookshot reload
+    default: op
+  hookshot.admin:
+    description: All administrative Hookshot permissions
+    default: op
+    children:
+      hookshot.give: true
+      hookshot.reload: true

@@ -6,6 +6,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-11-18
+
+Hookshot 2.0 replaces the fishing-rod grapple with a wearable **Grapple Harness** and a rope simulation that runs every tick. You can now swing, reel in, steer in mid-air, and keep your momentum, with both hands free for combat.
+
+### Breaking Changes
+
+- **Paper 26.2+ and Java 25 required**: Spigot is no longer supported
+- **Fishing-rod mode removed**, along with `/hookshot toggle|range|speed|boost|velocity|sound|particles|reset|info` and the per-player `playerdata.yml`
+- **New `config.yml` layout**: old keys are ignored
+
+### Grapple Harness
+
+- **Wearable Gear**: hooks fire from leggings, so both hands stay free
+- **Crafting Recipe**: configurable shaped recipe (tripwire hooks, iron chain, iron, leather leggings, wind charges), added to the recipe book on join
+- **Give Command**: `/hookshot give [player] [amount]` for admins and the console
+
+### Movement
+
+- **Dual Hooks**: up to two hooks at once that anchor to blocks, mobs, vehicles, and optionally players
+- **Rope Physics**: pendulum swings, reeling with Sneak, and wall perching at full reel
+- **Momentum**: low air drag while swinging, and momentum carried after letting go
+- **Air Control**: W/A/S/D steering while airborne
+- **Gas**: reeling and mid-air bursts use gas, which refills on the ground and is shown on the action bar
+- **Rope Rendering**: smooth display-entity ropes that are never saved to disk
+
+### Combat And Safety
+
+- **Momentum Damage**: melee bonus that scales with speed
+- **Fall Damage Multiplier** while wearing the harness, and no fall damage while hanging on a rope
+- **Flight-Kick Protection** while hanging still, with crash-safe cleanup on rejoin
+- **Server-Side Ground Check**, so modified clients cannot refill gas in mid-air
+
 ## [1.0.0] - 2026-04-28
 
 Hookshot v1.0.0 is the initial release, transforming fishing rods into fully configurable per-player grappling hooks with block and entity pull, persistent settings, and visual feedback.

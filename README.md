@@ -3,29 +3,32 @@
 </p>
 <h1 align="center">Cobbleworks - Hookshot Plugin</h1>
 <p align="center">
-  <b>Turn ordinary fishing rods into configurable grappling hooks for exploration and mobility.</b><br>
-  <b>Pull toward blocks, retrieve nearby mobs, and tune every player's range, speed, boost, and effects.</b>
+  <b>A wearable grapple harness with rope-swing physics for fast, fluid movement.</b><br>
+  <b>Fire two hooks at anything, swing, reel in with gas, let go at speed, and land momentum-powered strikes.</b>
 </p>
 <p align="center">
-  <a href="https://github.com/Cobbleworks/Hookshot-Plugin/releases"><img src="https://img.shields.io/github/v/release/Cobbleworks/Hookshot-Plugin?include_prereleases&style=flat-square&color=4CAF50" alt="Latest Release"></a>&nbsp;&nbsp;<a href="https://github.com/Cobbleworks/Hookshot-Plugin/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Java-17+-orange?style=flat-square" alt="Java Version">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Minecraft-1.19+-green?style=flat-square" alt="Minecraft Version">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Platform-Spigot%2FPaper-yellow?style=flat-square" alt="Platform">&nbsp;&nbsp;<a href="https://github.com/Cobbleworks/Hookshot-Plugin/issues"><img src="https://img.shields.io/github/issues/Cobbleworks/Hookshot-Plugin?style=flat-square&color=orange" alt="Open Issues"></a>
+  <a href="https://github.com/Cobbleworks/Hookshot-Plugin/releases"><img src="https://img.shields.io/github/v/release/Cobbleworks/Hookshot-Plugin?include_prereleases&style=flat-square&color=4CAF50" alt="Latest Release"></a>&nbsp;&nbsp;<a href="https://github.com/Cobbleworks/Hookshot-Plugin/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"></a>&nbsp;&nbsp;<img src="https://img.shields.io/badge/Java-25+-orange?style=flat-square" alt="Java Version">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Minecraft-26.2+-green?style=flat-square" alt="Minecraft Version">&nbsp;&nbsp;<img src="https://img.shields.io/badge/Platform-Paper-yellow?style=flat-square" alt="Platform">&nbsp;&nbsp;<a href="https://github.com/Cobbleworks/Hookshot-Plugin/issues"><img src="https://img.shields.io/github/issues/Cobbleworks/Hookshot-Plugin?style=flat-square&color=orange" alt="Open Issues"></a>
 </p>
 
-Hookshot gives each player a grappling mode for ordinary fishing rods. Hooks that strike a block pull the player toward the impact point; hooks that catch a non-player living entity pull that entity toward the player. Range, speed, boost, effects, and throw velocity are stored per player.
+Hookshot adds a **Grapple Harness**: leggings that fire hooks from the hips. Both hands stay free, so you can hold a sword while you swing. Hooks anchor to any solid block or to mobs. A rope simulation runs every tick, so you can swing, reel in, steer in mid-air, and keep your momentum when you let go.
 
 ## **Core Features**
 
-- Pull toward blocks or retrieve non-player living entities
-- Per-player range, pull speed, vertical boost, and hook velocity
-- Optional sound and particle feedback
-- Server-controlled defaults and value limits
-- Persistent player settings in `playerdata.yml`
+- Wearable harness in the leggings slot, so both hands stay free
+- Up to two hooks at once that anchor to blocks, mobs, and vehicles
+- Real rope physics: pendulum swings, reeling, and momentum carried after release
+- Air control with W/A/S/D while swinging
+- A gas supply for reeling and mid-air bursts that refills on the ground
+- Bonus melee damage when striking at speed
+- Smooth rope rendering with display entities
+- Craftable, or handed out with `/hookshot give`
 - No external dependencies
 
 ## **Supported Platforms**
 
-- **Server software:** Spigot, Paper, Purpur, and compatible forks
-- **Minecraft:** 1.19 or newer
-- **Java:** 17 or newer
+- **Server software:** Paper and Paper forks (Folia is not supported)
+- **Minecraft:** 26.2 or newer
+- **Java:** 25 or newer
 - **Dependencies:** None
 
 ## **Table of Contents**
@@ -33,102 +36,141 @@ Hookshot gives each player a grappling mode for ordinary fishing rods. Hooks tha
 1. [Core Features](#core-features)
 2. [Supported Platforms](#supported-platforms)
 3. [Getting Started](#getting-started)
-4. [Third-Party Plugins](#third-party-plugins)
+4. [Controls](#controls)
 5. [How It Works](#how-it-works)
-   - [Block Grappling](#block-grappling)
-   - [Entity Grappling](#entity-grappling)
-6. [Configuration](#configuration)
-7. [Commands](#commands)
-8. [Permissions](#permissions)
-9. [Data and Operational Notes](#data-and-operational-notes)
-10. [Building from Source](#building-from-source)
-11. [License](#license)
-12. [Screenshots](#screenshots)
+   - [Rope Physics](#rope-physics)
+   - [Gas](#gas)
+   - [Combat](#combat)
+6. [Crafting](#crafting)
+7. [Configuration](#configuration)
+8. [Commands](#commands)
+9. [Permissions](#permissions)
+10. [Operational Notes](#operational-notes)
+11. [Building from Source](#building-from-source)
+12. [License](#license)
+13. [Screenshots](#screenshots)
 
 ## **Getting Started**
 
 1. Download the latest JAR from [Releases](https://github.com/Cobbleworks/Hookshot-Plugin/releases).
 2. Stop the server and copy the JAR into `plugins/`.
-3. Start the server to generate `plugins/Hookshot/config.yml` and `playerdata.yml`.
-4. Hold a fishing rod and run `/hookshot` to enable grappling mode.
-5. Cast at a block within range to test the pull.
+3. Start the server to generate `plugins/Hookshot/config.yml`.
+4. Craft a Grapple Harness, or run `/hookshot give`.
+5. Put the harness on in the leggings slot, aim at a wall, and press **F**.
 
-When grappling mode is disabled, fishing rods retain their normal behavior.
+To get the feel for it, fire a hook at a high wall, walk off a ledge, and let the rope swing you. Then hold **Sneak** to reel in, and press **Jump** at the top of a swing to let go.
 
-For a comfortable first setup, keep the default range and speed, practice on a low structure, and use `/hookshot info` before changing values. The movement is applied as player velocity, so fall damage, protected regions, and server anti-cheat settings still behave according to the rest of the server configuration.
+## **Controls**
 
-## **Third-Party Plugins**
+| Input | Action |
+|-------|--------|
+| **Swap Hands** (default `F`) | Fire a hook where you aim. With two hooks out, a new one replaces the oldest. |
+| **Hold Sneak** | Reel in toward your hooks (uses gas). Fully reeled in, you hang on the spot. |
+| **Jump** in mid-air with hooks out | Let go and keep your momentum |
+| **Jump** in mid-air with no hooks out | Gas burst in the direction you look |
+| **W / A / S / D** in mid-air | Steer and pump your swing |
+| **Attack** | Normal melee, with bonus damage at high speed |
 
-No third-party plugins are required. Hookshot is self-contained.
+While the harness is worn, the Swap Hands key fires hooks instead of swapping items. You can still move items to the off-hand through the inventory. The action bar shows your gas and hook status.
 
 ## **How It Works**
 
-### **Block Grappling**
+### **Rope Physics**
 
-The hook's launch velocity is multiplied by the player's configured value. When it hits a block, Hookshot checks the distance, applies the configured pull speed toward the impact point, and adds vertical boost to help clear ledges. Hits beyond the configured range are rejected.
+A fired hook flies to the target point (`hooks.travel-speed`) and anchors there. From then on, the server simulates your movement every tick and sends you the result:
 
-### **Entity Grappling**
+- **Swinging:** the rope keeps you within its length of the anchor. You move freely around the anchor but cannot fly away from it, which is what makes a pendulum swing.
+- **Reeling:** holding Sneak shortens the rope and pulls you toward the anchor. With two hooks, you are pulled between them.
+- **Momentum:** air drag is much lower than vanilla (`movement.air-drag`), so swings keep their speed. When you let go, that momentum carries for `movement.momentum-ticks` before vanilla physics take over.
+- **Ground:** on the ground the rope pays out freely, so you can walk around while hooked. Hooks retract on their own after `hooks.auto-retract-ground-ticks`.
 
-Catching a living entity other than a player reverses the pull: the entity moves toward the caster. Entity pulls use slightly stronger horizontal and vertical multipliers than block pulls. Players cannot be pulled with this mechanic.
+Hooks break when the anchor block is broken, the hooked entity dies, or the entity pulls too far away. Mobs, boats, minecarts, and item frames can be hooked. Other players can only be hooked when `hooks.hook-players` is on.
 
-A 250 ms per-player cooldown prevents duplicate hit events from stacking velocity.
+### **Gas**
+
+Reeling uses gas every tick, and a mid-air burst uses a chunk at once. Swinging and firing hooks are free. Gas refills while you stand on the ground, after a short delay. When the tank is empty you can still swing, but you can't reel or burst.
+
+### **Combat**
+
+Melee hits land harder when you are moving fast. Above `combat.speed-threshold` (sprinting is about 0.28 blocks/tick), every extra block per tick adds `combat.bonus-per-speed` damage, capped at `combat.max-bonus`. Wearing the harness also scales fall damage by `combat.fall-damage-multiplier`, and you take no fall damage while hanging on a rope.
+
+## **Crafting**
+
+The default shaped recipe:
+
+```
+[Tripwire Hook] [Iron Chain]      [Tripwire Hook]
+[Iron Ingot]    [Leather Leggings] [Iron Ingot]
+[Wind Charge]   [ empty ]         [Wind Charge]
+```
+
+The wind charges act as the gas canisters. Players unlock the recipe in the recipe book when they join. You can change the shape and ingredients under `recipe` in `config.yml`, or set `recipe.enabled: false` to make the harness command-only.
 
 ## **Configuration**
 
-`config.yml` controls the defaults assigned to new players and the limits accepted by setting commands.
+All values are in blocks and ticks (20 ticks = 1 second). Apply changes with `/hookshot reload`.
 
 | Key | Default | Purpose |
 |-----|---------|---------|
-| `default-range` | `30.0` | Maximum hook distance in blocks |
-| `pull-speed` | `2.0` | Player pull velocity multiplier |
-| `vertical-boost` | `0.3` | Upward force added to a pull |
-| `hook-velocity-multiplier` | `2.0` | Fishing-hook launch velocity |
-| `play-sound` | `true` | Default sound preference |
-| `show-particles` | `true` | Default particle preference |
-| `min-range` / `max-range` | `10.0` / `100.0` | Allowed range values |
-| `min-pull-speed` / `max-pull-speed` | `0.5` / `5.0` | Allowed pull-speed values |
-| `min-vertical-boost` / `max-vertical-boost` | `0.0` / `1.5` | Allowed boost values |
-| `min-hook-velocity` / `max-hook-velocity` | `1.0` / `5.0` | Allowed launch-velocity values |
+| `harness.material` / `harness.color` / `harness.name` | `LEATHER_LEGGINGS` / `#3B2F2F` / `Grapple Harness` | Harness item appearance |
+| `recipe.enabled` / `recipe.shape` / `recipe.ingredients` | see above | Crafting recipe |
+| `hooks.range` | `40.0` | Maximum firing distance |
+| `hooks.max-hooks` | `2` | Hooks out at once (1-4) |
+| `hooks.travel-speed` | `4.0` | Hook flight speed per tick |
+| `hooks.fire-cooldown-ticks` | `4` | Delay between shots |
+| `hooks.hook-entities` / `hooks.hook-players` | `true` / `false` | What hooks may anchor to besides blocks |
+| `hooks.auto-retract-ground-ticks` | `40` | Retract after standing this long (0 = never) |
+| `rope.min-length` | `1.5` | Shortest reeled rope |
+| `rope.reel-speed` / `rope.reel-acceleration` | `0.6` / `0.15` | Reeling strength |
+| `rope.block` / `rope.width` | `GRAY_CONCRETE` / `0.05` | Rope appearance |
+| `movement.air-drag` | `0.995` | Velocity kept per tick while swinging (vanilla is 0.91) |
+| `movement.steer-acceleration` | `0.04` | W/A/S/D air control |
+| `movement.max-speed` | `3.0` | Speed cap |
+| `movement.momentum-ticks` | `40` | Momentum carry after letting go |
+| `gas.capacity` | `100.0` | Tank size |
+| `gas.reel-cost` | `0.5` | Gas per tick of reeling |
+| `gas.burst-enabled` / `gas.burst-cost` / `gas.burst-power` / `gas.burst-cooldown-ticks` | `true` / `20.0` / `1.1` / `10` | Mid-air gas burst |
+| `gas.regen-per-tick` / `gas.regen-delay-ticks` | `1.0` / `20` | Refill on the ground |
+| `combat.momentum-damage` | `true` | Speed-based melee bonus |
+| `combat.speed-threshold` / `combat.bonus-per-speed` / `combat.max-bonus` | `0.7` / `0.6` / `1.0` | Bonus curve |
+| `combat.fall-damage-multiplier` | `0.5` | Fall damage while wearing the harness |
+| `effects.sounds` / `effects.particles` | `true` / `true` | Feedback effects |
 
-Configuration changes apply after a restart. Existing players keep their stored values until they change them or use `/hookshot reset`.
+Out-of-range values are clamped to safe limits, and invalid materials fall back to the defaults with a console warning.
 
 ## **Commands**
 
 **Root command:** `/hookshot`
 **Aliases:** `/hook`, `/grapple`
 
-| Command | Description |
-|---------|-------------|
-| `/hookshot` or `/hookshot toggle` | Enable or disable grappling mode |
-| `/hookshot range <value>` | Set the maximum pull range |
-| `/hookshot speed <value>` | Set player/entity pull strength |
-| `/hookshot boost <value>` | Set additional upward momentum |
-| `/hookshot velocity <value>` | Set hook launch velocity |
-| `/hookshot sound` | Toggle personal pull sounds |
-| `/hookshot particles` | Toggle personal pull particles |
-| `/hookshot reset` | Restore current server defaults |
-| `/hookshot info` | Display personal settings |
+| Command | Description | Permission |
+|---------|-------------|------------|
+| `/hookshot` or `/hookshot help` | Show the controls | none |
+| `/hookshot give [player] [amount]` | Give harnesses (amount 1-64) | `hookshot.give` |
+| `/hookshot reload` | Reload `config.yml` and the recipe | `hookshot.reload` |
 
-Hookshot commands are player-only; they cannot be run from the console.
+`give` and `reload` also work from the console. From the console, `give` needs a player name.
 
 ## **Permissions**
 
 | Permission | Description | Default |
 |------------|-------------|---------|
-| `hookshot.use` | Use grappling mode and basic commands | `true` |
-| `hookshot.settings` | Change personal range, speed, boost, velocity, sound, and particles | `true` |
-| `hookshot.admin` | Reserved administrative access | `op` |
+| `hookshot.use` | Use a worn harness | `true` |
+| `hookshot.give` | Give harnesses | `op` |
+| `hookshot.reload` | Reload the configuration | `op` |
+| `hookshot.admin` | Grants `hookshot.give` and `hookshot.reload` | `op` |
 
-## **Data and Operational Notes**
+## **Operational Notes**
 
-- `playerdata.yml` stores settings by player UUID and is managed automatically.
-- Settings are saved when changed and during plugin shutdown.
-- A player must retain `hookshot.use`; removing it disables grappling even if their saved mode is enabled.
-- Very high speed and boost limits can cause fall damage or anti-cheat alerts, so raise server limits carefully.
+- **Anti-cheat:** grappling moves players faster than vanilla allows. Movement checks in anti-cheat plugins may flag it, so add an exemption for harness users if needed.
+- **Flight kick protection:** hanging still on a rope looks like flying to the vanilla anti-fly check. While a player hangs on a rope, Hookshot temporarily allows flight and blocks real flight from being turned on. It switches this off when the player lets go. It is also cleaned up on rejoin if the server stopped mid-swing.
+- **Latency:** the rope simulation runs on the server, so players with high ping may notice a slight delay when a swing starts or stops.
+- **Teleports:** hooks are released on death, world changes, and teleports over 4 blocks.
+- **Upgrading from 1.x:** the fishing-rod mode and per-player settings are gone. You can delete the old `playerdata.yml`. Old keys in `config.yml` are ignored; regenerate the file to see the new options.
 
 ## **Building from Source**
 
-Requirements: Java 17 or newer and Maven 3.6 or newer.
+Requirements: Java 25 or newer and Maven 3.8 or newer.
 
 ```bash
 git clone https://github.com/Cobbleworks/Hookshot-Plugin.git
