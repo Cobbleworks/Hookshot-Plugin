@@ -36,6 +36,8 @@ final class GrappleState {
     long lastTick = Long.MIN_VALUE;
 
     int groundTicks;
+    /** Ticks spent idle on the ground while hooked; drives auto-retract. Reset by every new attach. */
+    int groundedHookTicks;
     int freeFlightTicks;
     int fireCooldown;
     int burstCooldown;

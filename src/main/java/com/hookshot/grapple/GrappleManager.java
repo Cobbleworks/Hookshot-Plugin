@@ -284,11 +284,14 @@ public final class GrappleManager {
                     }
                 }
                 state.commanding = false;
-                if (settings.autoRetractGroundTicks() > 0 && state.groundTicks >= settings.autoRetractGroundTicks()) {
+                state.groundedHookTicks++;
+                if (settings.autoRetractGroundTicks() > 0
+                        && state.groundedHookTicks >= settings.autoRetractGroundTicks()) {
                     releaseAll(player, state, true);
                     state.mode = GrappleState.Mode.IDLE;
                 }
             } else {
+                state.groundedHookTicks = 0;
                 simulateHooked(player, state, hip, input, onGround, reeling);
             }
         } else {
@@ -447,6 +450,7 @@ public final class GrappleManager {
                 case ATTACHED_NOW -> {
                     hook.ropeLength = Math.clamp(hip.distance(hook.anchor()), settings.minRopeLength(),
                             settings.maxRopeLength());
+                    state.groundedHookTicks = 0;
                     attachEffects(player, hook);
                 }
                 case ATTACHED -> {
@@ -621,7 +625,7 @@ public final class GrappleManager {
                 .append(Component.text("Gas ", NamedTextColor.GRAY))
                 .append(Component.text("|".repeat(filled), gasColor))
                 .append(Component.text("|".repeat(HUD_SEGMENTS - filled), NamedTextColor.DARK_GRAY))
-                .append(Component.text("   "));
+                .append(Component.text("   Hooks ", NamedTextColor.GRAY));
         int index = 0;
         for (Hook hook : state.hooks) {
             if (hook.isMiss()) {

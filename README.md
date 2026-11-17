@@ -71,7 +71,17 @@ To get the feel for it, fire a hook at a high wall, walk off a ledge, and let th
 | **W / A / S / D** in mid-air | Steer and pump your swing |
 | **Attack** | Normal melee, with bonus damage at high speed |
 
-While the harness is worn, the Swap Hands key fires hooks instead of swapping items. You can still move items to the off-hand through the inventory. The action bar shows your gas and hook status.
+While the harness is worn, the Swap Hands key fires hooks instead of swapping items. You can still move items to the off-hand through the inventory.
+
+The action bar shows your gas tank and one diamond per hook slot:
+
+| Diamond | Meaning |
+|---------|---------|
+| Gray | Hook slot free |
+| Yellow | Hook in flight |
+| Green | Hook anchored |
+
+When you stand on the ground while hooked, the rope stays out for `hooks.auto-retract-ground-ticks` (2 seconds by default) and then retracts. Hold **Sneak** during that time to reel yourself up.
 
 ## **How It Works**
 
