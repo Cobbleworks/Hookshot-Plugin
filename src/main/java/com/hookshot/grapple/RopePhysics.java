@@ -69,6 +69,18 @@ public final class RopePhysics {
         return result.normalize().multiply(acceleration);
     }
 
+    /**
+     * Velocity after a gas burst toward {@code direction} (a unit vector). Speed already heading
+     * that way is kept; the rest of the motion (sideways, backward, falling) is cancelled by
+     * {@code redirect}: 1 cancels it fully, so a burst can overcome a hard swing, and 0 keeps it,
+     * which simply adds the burst on top of the current velocity.
+     */
+    public static Vector burst(Vector velocity, Vector direction, double power, double redirect) {
+        Vector along = direction.clone().multiply(Math.max(0.0, velocity.dot(direction)));
+        Vector rest = velocity.clone().subtract(along).multiply(1.0 - redirect);
+        return along.add(rest).add(direction.clone().multiply(power));
+    }
+
     /** Scales the vector down to {@code maxSpeed} if it is faster. */
     public static void clampSpeed(Vector velocity, double maxSpeed) {
         double speedSquared = velocity.lengthSquared();

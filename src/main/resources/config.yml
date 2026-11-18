@@ -85,6 +85,10 @@ gas:
   burst-enabled: true
   burst-cost: 20.0
   burst-power: 1.1
+  # How much of your motion NOT going where you look the burst cancels (0.0-1.0).
+  # 1.0 lets a burst overpower a hard swing to change course; speed already heading
+  # where you look is always kept. 0.0 just adds the burst on top of your current motion.
+  burst-redirect: 1.0
   burst-cooldown-ticks: 10
   # Gas refills while standing on the ground, after a short delay.
   regen-per-tick: 1.0

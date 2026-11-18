@@ -493,7 +493,8 @@ public final class GrappleManager {
             return;
         }
         Vector direction = player.getLocation().getDirection();
-        Vector velocity = state.currentVelocity().add(direction.clone().multiply(settings.burstPower()));
+        Vector velocity = RopePhysics.burst(state.currentVelocity(), direction, settings.burstPower(),
+                settings.burstRedirect());
         RopePhysics.clampSpeed(velocity, settings.maxSpeed());
         sendVelocity(player, state, velocity);
         state.mode = GrappleState.Mode.FREE_FLIGHT;

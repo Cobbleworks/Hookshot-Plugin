@@ -107,4 +107,37 @@ class RopePhysicsTest {
         assertEquals(0.0, RopePhysics.direction(new Vector(1, 2, 3), new Vector(1, 2, 3)).length(), EPS);
         assertEquals(1.0, RopePhysics.direction(new Vector(), new Vector(0, 5, 0)).length(), EPS);
     }
+
+    @Test
+    void fullRedirectBurstOverpowersASwingGoingTheOtherWay() {
+        Vector swing = new Vector(-2.5, -0.4, 0.8);
+        Vector look = new Vector(1, 0, 0);
+
+        Vector result = RopePhysics.burst(swing, look, 1.1, 1.0);
+
+        assertEquals(new Vector(1.1, 0, 0), result);
+    }
+
+    @Test
+    void burstKeepsSpeedAlreadyHeadingWhereYouLook() {
+        Vector flying = new Vector(2.0, 0, 0.5);
+        Vector look = new Vector(1, 0, 0);
+
+        Vector result = RopePhysics.burst(flying, look, 1.1, 1.0);
+
+        assertEquals(3.1, result.getX(), EPS);
+        assertEquals(0.0, result.getZ(), EPS);
+    }
+
+    @Test
+    void zeroRedirectBurstAddsOnTopLikeBefore() {
+        Vector velocity = new Vector(-2.5, -0.4, 0.8);
+        Vector look = new Vector(0, 1, 0);
+
+        Vector result = RopePhysics.burst(velocity, look, 1.1, 0.0);
+
+        assertEquals(-2.5, result.getX(), EPS);
+        assertEquals(0.7, result.getY(), EPS);
+        assertEquals(0.8, result.getZ(), EPS);
+    }
 }

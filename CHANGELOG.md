@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Sneak Release**: letting go of Sneak after reeling now lets go of the hooks, so one key reels and releases (`controls.release-on-sneak-release`)
 - **Jump Release On The Ground**: Jump now lets go of hooks while standing too, instead of being ignored until you were airborne
 - **Free Hanging**: holding Sneak at full reel no longer uses gas
+- **Redirecting Burst**: the gas burst now cancels motion not going where you look, so it can overpower a hard swing to change course; speed already heading that way is kept (`gas.burst-redirect`)
 
 ### Fixed
 

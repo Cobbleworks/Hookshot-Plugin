@@ -68,7 +68,7 @@ To get the feel for it, fire a hook at a high wall, walk off a ledge, and let th
 | **Hold Sneak** | Reel in toward your hooks (uses gas). Fully reeled in, you hang on the spot for free. |
 | **Release Sneak** after reeling | Let go and keep your momentum (`controls.release-on-sneak-release`) |
 | **Jump** with hooks out | Let go: in mid-air you keep your momentum, on the ground you just jump |
-| **Jump** in mid-air with no hooks out | Gas burst in the direction you look |
+| **Jump** in mid-air with no hooks out | Gas burst in the direction you look. It cancels motion going elsewhere, so you can change course mid-swing |
 | **W / A / S / D** in mid-air | Steer and pump your swing |
 | **Attack** | Normal melee, with bonus damage at high speed |
 
@@ -99,7 +99,7 @@ Hooks break when the anchor block is broken, the hooked entity dies, or the enti
 
 ### **Gas**
 
-Reeling uses gas every tick (hanging at full reel is free), and a mid-air burst uses a chunk at once. Swinging and firing hooks are free. Gas refills while you stand on the ground, after a short delay. When the tank is empty you can still swing, but you can't reel or burst.
+Reeling uses gas every tick (hanging at full reel is free), and a mid-air burst uses a chunk at once. A burst sends you where you look: speed already heading that way is kept, and motion in other directions is cancelled (`gas.burst-redirect`), so a burst can overpower a hard swing to change course. Swinging and firing hooks are free. Gas refills while you stand on the ground, after a short delay. When the tank is empty you can still swing, but you can't reel or burst.
 
 ### **Combat**
 
@@ -143,6 +143,7 @@ All values are in blocks and ticks (20 ticks = 1 second). Apply changes with `/h
 | `gas.capacity` | `100.0` | Tank size |
 | `gas.reel-cost` | `0.5` | Gas per tick of reeling |
 | `gas.burst-enabled` / `gas.burst-cost` / `gas.burst-power` / `gas.burst-cooldown-ticks` | `true` / `20.0` / `1.1` / `10` | Mid-air gas burst |
+| `gas.burst-redirect` | `1.0` | How much motion not going where you look a burst cancels (0 = add on top) |
 | `gas.regen-per-tick` / `gas.regen-delay-ticks` | `1.0` / `20` | Refill on the ground |
 | `combat.momentum-damage` | `true` | Speed-based melee bonus |
 | `combat.speed-threshold` / `combat.bonus-per-speed` / `combat.max-bonus` | `0.7` / `0.6` / `1.0` | Bonus curve |
