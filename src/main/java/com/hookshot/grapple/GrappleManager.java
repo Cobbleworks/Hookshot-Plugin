@@ -105,7 +105,7 @@ public final class GrappleManager {
                 && harness.isWearing(player);
     }
 
-    /** Fires a hook where the player is aiming (Swap Hands key). */
+    /** Fires a hook where the player is aiming (right-click while holding a sword). */
     public void fire(Player player) {
         GrappleState state = state(player);
         if (state.fireCooldown > 0) {
