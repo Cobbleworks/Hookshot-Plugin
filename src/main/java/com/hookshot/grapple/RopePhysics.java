@@ -13,6 +13,7 @@ public final class RopePhysics {
     public static final double VERTICAL_DRAG = 0.98;
     /** Largest velocity change a single rope correction may apply per tick. */
     public static final double MAX_CORRECTION = 1.0;
+    private static final double REEL_STOP_DISTANCE = 0.05;
 
     private RopePhysics() {
     }
@@ -47,6 +48,36 @@ public final class RopePhysics {
         }
         velocity.add(delta);
         return true;
+    }
+
+    /** Displacement toward an anchor, stopping at the minimum rope length. */
+    static Vector reelDisplacement(Vector position, Vector anchor, double minLength) {
+        Vector offset = anchor.clone().subtract(position);
+        double distance = offset.length();
+        return distance <= minLength ? offset.zero() : offset.multiply(1.0 - minLength / distance);
+    }
+
+    /** Drives the reel toward the average anchor displacement and brakes as it closes the gap. */
+    static Vector reelVelocity(Vector displacement, Vector currentVelocity, Vector steering,
+                               double maxSpeed, double acceleration) {
+        double distance = displacement.length();
+        if (distance <= REEL_STOP_DISTANCE) {
+            return new Vector();
+        }
+
+        Vector direction = displacement.clone().multiply(1.0 / distance);
+        // Cover at most half the remaining distance per tick, even when starting from a fast swing.
+        double speed = Math.min(maxSpeed, distance * 0.5);
+        if (acceleration > 0.0) {
+            double forwardSpeed = Math.max(0.0, currentVelocity.dot(direction));
+            speed = Math.min(speed, forwardSpeed + acceleration);
+        }
+
+        Vector lateral = steering.clone().subtract(direction.clone().multiply(steering.dot(direction)));
+        clampSpeed(lateral, speed * 0.5);
+        Vector velocity = direction.multiply(speed).add(lateral);
+        clampSpeed(velocity, speed);
+        return velocity;
     }
 
     /**

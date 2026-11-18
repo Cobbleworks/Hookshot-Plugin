@@ -39,7 +39,7 @@ import java.util.UUID;
  *   <li>measure the player's real movement from position changes,</li>
  *   <li>advance flying hooks and validate anchors,</li>
  *   <li>while hooked or carrying momentum, integrate velocity on the server (gravity,
- *       low drag, steering, reeling, rope constraint, collisions) and send it,</li>
+ *       low drag, steering, rope constraint, collisions) or drive a powered reel and send it,</li>
  *   <li>render ropes and the gas HUD.</li>
  * </ol>
  * Sending the velocity every tick, with low drag, lets swings keep their speed instead
@@ -299,7 +299,8 @@ public final class GrappleManager {
         Input input = player.getCurrentInput();
         boolean attached = state.hasAttachedHook();
         boolean wantsReel = attached && input.isSneak();
-        boolean reeling = wantsReel && state.gas > 0;
+        Vector reelVelocity = wantsReel ? reelVelocity(player, state, hip, input, onGround) : null;
+        boolean reeling = wantsReel && (state.gas > 0 || reelVelocity.lengthSquared() == 0.0);
         if (!input.isSneak()) {
             state.outOfGasWarned = false;
         } else if (wantsReel && !reeling && !state.outOfGasWarned) {
@@ -312,6 +313,17 @@ public final class GrappleManager {
         }
         updateSlack(state, position, onGround, reeling);
 
+        if (attached && (reeling || state.reeling || state.ropeSlack)) {
+            // Pay out on the ground and match the real distance during reeling. A wall can stop
+            // the player mid-pull, so the swing must resume from the actual rope length.
+            for (Hook hook : state.hooks) {
+                if (hook.isAttached()) {
+                    hook.ropeLength = Math.max(settings.minRopeLength(), hip.distance(hook.anchor()));
+                }
+            }
+        }
+        state.reeling = reeling;
+
         if (attached) {
             state.mode = GrappleState.Mode.HOOKED;
             player.setFallDistance(0f);
@@ -319,12 +331,6 @@ public final class GrappleManager {
                 enableManagedFlight(player, state);
             }
             if (state.ropeSlack) {
-                // The spool pays out freely, so walking around (and over steps) is never blocked.
-                for (Hook hook : state.hooks) {
-                    if (hook.isAttached()) {
-                        hook.ropeLength = Math.max(settings.minRopeLength(), hip.distance(hook.anchor()));
-                    }
-                }
                 state.commanding = false;
                 state.groundedHookTicks++;
                 if (settings.autoRetractGroundTicks() > 0
@@ -334,7 +340,11 @@ public final class GrappleManager {
                 }
             } else {
                 state.groundedHookTicks = 0;
-                simulateHooked(player, state, hip, input, onGround, reeling);
+                if (reeling) {
+                    simulateReeling(player, state, hip, reelVelocity);
+                } else {
+                    simulateHooked(player, state, hip, input, onGround);
+                }
             }
         } else {
             restoreFlight(player, state);
@@ -354,7 +364,7 @@ public final class GrappleManager {
             }
         }
 
-        regenerateGas(state, onGround, reeling);
+        regenerateGas(state, onGround, reeling && reelVelocity.lengthSquared() > 0.0);
         renderHooks(state, hip);
         updateHud(player, state);
     }
@@ -376,50 +386,36 @@ public final class GrappleManager {
         }
     }
 
-    /** Every anchored rope is at minimum length and the player is hanging at it. */
-    private boolean isFullyReeled(GrappleState state, Vector hip) {
-        boolean any = false;
+    private Vector reelVelocity(Player player, GrappleState state, Vector hip, Input input, boolean onGround) {
+        Vector displacement = new Vector();
+        int anchors = 0;
         for (Hook hook : state.hooks) {
-            if (!hook.isAttached()) {
-                continue;
+            if (hook.isAttached()) {
+                displacement.add(RopePhysics.reelDisplacement(hip, hook.anchor(), settings.minRopeLength()));
+                anchors++;
             }
-            if (hook.ropeLength > settings.minRopeLength() + 1.0E-3
-                    || hip.distance(hook.anchor()) > settings.minRopeLength() + 0.4) {
-                return false;
-            }
-            any = true;
         }
-        return any;
+        displacement.multiply(1.0 / anchors);
+        Vector steering = onGround ? new Vector() : steering(player, input, settings.steerAcceleration());
+        return RopePhysics.reelVelocity(displacement, state.currentVelocity(), steering,
+                Math.min(settings.reelSpeed(), settings.maxSpeed()), settings.reelAcceleration());
     }
 
-    private void simulateHooked(Player player, GrappleState state, Vector hip, Input input, boolean onGround,
-                                boolean reeling) {
+    private void simulateReeling(Player player, GrappleState state, Vector hip, Vector velocity) {
+        resolveCollisions(player, velocity);
+        if (velocity.lengthSquared() > 0.0) {
+            state.gas = Math.max(0.0, state.gas - settings.reelGasCost());
+            state.gasRegenDelay = settings.gasRegenDelayTicks();
+            reelEffects(player, state, hip, velocity);
+        }
+        sendVelocity(player, state, velocity);
+    }
+
+    private void simulateHooked(Player player, GrappleState state, Vector hip, Input input, boolean onGround) {
         Vector velocity = state.commanding ? state.simulatedVelocity.clone() : state.smoothedVelocity();
         RopePhysics.applyGravityAndDrag(velocity, settings.airDrag());
         if (!onGround) {
             velocity.add(steering(player, input, settings.steerAcceleration()));
-        }
-
-        if (reeling) {
-            // Holding Sneak to hang at full reel is free; only actually shortening a rope uses gas.
-            boolean fullyReeled = isFullyReeled(state, hip);
-            Vector pull = new Vector();
-            for (Hook hook : state.hooks) {
-                if (hook.isAttached()) {
-                    pull.add(RopePhysics.direction(hip, hook.anchor()));
-                    double distance = hip.distance(hook.anchor());
-                    hook.ropeLength = Math.max(settings.minRopeLength(),
-                            Math.min(hook.ropeLength - settings.reelSpeed(), distance));
-                }
-            }
-            if (pull.lengthSquared() > 1.0E-6) {
-                velocity.add(pull.normalize().multiply(settings.reelAcceleration()));
-            }
-            if (!fullyReeled) {
-                state.gas = Math.max(0.0, state.gas - settings.reelGasCost());
-                state.gasRegenDelay = settings.gasRegenDelayTicks();
-                reelEffects(player, state, hip, velocity);
-            }
         }
 
         boolean perched = false;
@@ -559,6 +555,7 @@ public final class GrappleManager {
         }
         state.hooks.clear();
         state.sneakArmed = false;
+        state.reeling = false;
         restoreFlight(player, state);
         if (playSound && hadHooks) {
             sound(player.getLocation(), Sound.ITEM_LEAD_UNTIED, 0.8f, 1.2f);

@@ -50,6 +50,8 @@ final class GrappleState {
     /** Sneak was held while a hook was anchored, so letting go of Sneak lets go of the hooks. */
     boolean sneakArmed;
     boolean outOfGasWarned;
+    /** The reel drove the previous tick, so a swing resumes at the current rope length. */
+    boolean reeling;
 
     /**
      * The spool pays out freely: true on the ground and for a short drop after stepping off it,

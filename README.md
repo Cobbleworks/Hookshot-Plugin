@@ -91,7 +91,7 @@ When you stand on the ground while hooked, the rope stays out for `hooks.auto-re
 A fired hook flies to the target point (`hooks.travel-speed`) and anchors there. From then on, the server simulates your movement every tick and sends you the result:
 
 - **Swinging:** the rope keeps you within its length of the anchor. You move freely around the anchor but cannot fly away from it, which is what makes a pendulum swing.
-- **Reeling:** holding Sneak shortens the rope and pulls you toward the anchor. With two hooks, you are pulled between them.
+- **Reeling:** holding Sneak pulls you toward the hook and slows you to a stop as you arrive. With two hooks, the pull settles between them. Keep holding Sneak to hang in place.
 - **Momentum:** air drag is much lower than vanilla (`movement.air-drag`), so swings keep their speed. When you let go, that momentum carries for `movement.momentum-ticks` before vanilla physics take over.
 - **Ground:** on the ground the rope pays out freely, so you can walk around while hooked. It stays slack when you step off the ground until you drop `rope.ground-slack-drop` below where you left it, so steps, stairs, and small hops never yank you back. Running off a real ledge still starts a swing. Hooks retract on their own after `hooks.auto-retract-ground-ticks`.
 
@@ -133,7 +133,7 @@ All values are in blocks and ticks (20 ticks = 1 second). Apply changes with `/h
 | `hooks.hook-entities` / `hooks.hook-players` | `true` / `false` | What hooks may anchor to besides blocks |
 | `hooks.auto-retract-ground-ticks` | `40` | Retract after standing this long (0 = never) |
 | `rope.min-length` | `1.5` | Shortest reeled rope |
-| `rope.reel-speed` / `rope.reel-acceleration` | `0.6` / `0.15` | Reeling strength |
+| `rope.reel-speed` / `rope.reel-acceleration` | `0.6` / `0.15` | Top pull speed and how quickly the reel reaches it |
 | `rope.ground-slack-drop` | `1.25` | How far you can drop after stepping off the ground before the rope tightens |
 | `rope.block` / `rope.width` | `GRAY_CONCRETE` / `0.05` | Rope appearance |
 | `movement.air-drag` | `0.995` | Velocity kept per tick while swinging (vanilla is 0.91) |

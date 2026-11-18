@@ -54,9 +54,9 @@ hooks:
 rope:
   # Shortest length a rope can be reeled to.
   min-length: 1.5
-  # How much the rope shortens per tick while reeling.
+  # Top pull speed in blocks per tick. The reel slows down as you approach the anchor.
   reel-speed: 0.6
-  # Acceleration toward the anchor while reeling.
+  # How quickly the pull speeds up. 0 applies the requested pull speed immediately.
   reel-acceleration: 0.15
   # After stepping off the ground the rope stays slack until you drop this far below where
   # you left it, so steps, stairs, and small hops never yank you back toward the anchor.

@@ -55,6 +55,58 @@ class RopePhysicsTest {
     }
 
     @Test
+    void fastReelArrivalSlowsToAStopOutsideTheMinimumLength() {
+        Vector anchor = new Vector(0, 10, 0);
+        Vector position = new Vector(0, 8, 0);
+        Vector velocity = new Vector(0, 3, 0);
+        Vector steering = new Vector(0.04, 0, 0);
+        double minLength = 1.5;
+
+        for (int tick = 0; tick < 10; tick++) {
+            double distance = position.distance(anchor);
+            Vector remaining = RopePhysics.reelDisplacement(position, anchor, minLength);
+            Vector nextVelocity = RopePhysics.reelVelocity(remaining, velocity, steering, 0.6, 0.15);
+            assertTrue(nextVelocity.length() <= velocity.length() + EPS);
+            position.add(nextVelocity);
+            assertTrue(position.distance(anchor) >= minLength);
+            assertTrue(position.distance(anchor) <= distance);
+            velocity = nextVelocity;
+        }
+
+        assertEquals(0.0, velocity.length(), EPS);
+        assertTrue(position.distance(anchor) <= minLength + 0.05);
+    }
+
+    @Test
+    void reelBuildsSpeedTowardTheAnchorWithoutCarryingAwaywardMomentum() {
+        Vector remaining = new Vector(10, 0, 0);
+        Vector velocity = new Vector(-3, 0, 0);
+
+        for (double expectedSpeed : new double[]{0.15, 0.30, 0.45, 0.60, 0.60}) {
+            velocity = RopePhysics.reelVelocity(remaining, velocity, new Vector(), 0.6, 0.15);
+            assertEquals(expectedSpeed, velocity.getX(), EPS);
+        }
+    }
+
+    @Test
+    void oppositeAnchorsCanSettleBetweenThemEvenWhenBothAreOutOfReach() {
+        Vector position = new Vector(1, 0, 0);
+        Vector left = new Vector(-5, 0, 0);
+        Vector right = new Vector(5, 0, 0);
+        Vector velocity = new Vector();
+
+        for (int tick = 0; tick < 10; tick++) {
+            Vector remaining = RopePhysics.reelDisplacement(position, left, 1.5)
+                    .add(RopePhysics.reelDisplacement(position, right, 1.5)).multiply(0.5);
+            velocity = RopePhysics.reelVelocity(remaining, velocity, new Vector(), 0.6, 0.15);
+            position.add(velocity);
+        }
+
+        assertEquals(0.0, velocity.length(), EPS);
+        assertTrue(position.length() <= 0.05);
+    }
+
+    @Test
     void steeringFollowsMinecraftYaw() {
         // yaw 0 faces +Z (south); right-hand side is -X (west)
         Vector forward = RopePhysics.steering(true, false, false, false, 0f, 1.0);
