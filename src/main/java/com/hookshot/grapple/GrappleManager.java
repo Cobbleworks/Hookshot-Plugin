@@ -415,7 +415,7 @@ public final class GrappleManager {
         Vector velocity = state.commanding ? state.simulatedVelocity.clone() : state.smoothedVelocity();
         RopePhysics.applyGravityAndDrag(velocity, settings.airDrag());
         if (!onGround) {
-            velocity.add(steering(player, input, settings.steerAcceleration()));
+            RopePhysics.applyAirSteering(velocity, steering(player, input, settings.steerAcceleration()));
         }
 
         boolean perched = false;
@@ -451,7 +451,7 @@ public final class GrappleManager {
         }
         Vector velocity = state.commanding ? state.simulatedVelocity.clone() : state.smoothedVelocity();
         RopePhysics.applyGravityAndDrag(velocity, settings.airDrag());
-        velocity.add(steering(player, input, settings.steerAcceleration() * 0.5));
+        RopePhysics.applyAirSteering(velocity, steering(player, input, settings.steerAcceleration() * 0.5));
         RopePhysics.clampSpeed(velocity, settings.maxSpeed());
         resolveCollisions(player, velocity);
         sendVelocity(player, state, velocity);

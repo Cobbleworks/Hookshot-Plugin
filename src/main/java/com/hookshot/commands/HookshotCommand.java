@@ -54,7 +54,7 @@ public final class HookshotCommand implements CommandExecutor, TabCompleter {
             line(sender, "Jump", "let go and keep your momentum");
         }
         line(sender, "Jump in mid-air, no hooks", "gas burst where you look");
-        line(sender, "W A S D in mid-air", "steer and pump your swing");
+        line(sender, "W A S D in mid-air", "steer your swing or flight");
         sender.sendMessage(Component.text("Gas refills on the ground. Fast melee hits deal bonus damage.",
                 NamedTextColor.GRAY));
         if (sender.hasPermission("hookshot.give")) {

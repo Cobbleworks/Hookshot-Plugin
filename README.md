@@ -69,7 +69,7 @@ To get the feel for it, fire a hook at a high wall, walk off a ledge, and let th
 | **Release Sneak** after reeling | Let go and keep your momentum (`controls.release-on-sneak-release`) |
 | **Jump** with hooks out | Let go: in mid-air you keep your momentum, on the ground you just jump |
 | **Jump** in mid-air with no hooks out | Gas burst in the direction you look. It cancels motion going elsewhere, so you can change course mid-swing |
-| **W / A / S / D** in mid-air | Steer and pump your swing |
+| **W / A / S / D** in mid-air | Steer while reeling, swinging, or carrying momentum |
 | **Attack** | Normal melee, with bonus damage at high speed |
 
 While the harness is worn and you hold any sword, right-click fires hooks instead of interacting with blocks (doors, chests, etc.). Switch to another item to use blocks normally.
@@ -93,6 +93,7 @@ A fired hook flies to the target point (`hooks.travel-speed`) and anchors there.
 - **Swinging:** the rope keeps you within its length of the anchor. You move freely around the anchor but cannot fly away from it, which is what makes a pendulum swing.
 - **Reeling:** holding Sneak pulls you toward the hook and slows you to a stop as you arrive. With two hooks, the pull settles between them. Keep holding Sneak to hang in place.
 - **Momentum:** air drag is much lower than vanilla (`movement.air-drag`), so swings keep their speed. When you let go, that momentum carries for `movement.momentum-ticks` before vanilla physics take over.
+- **Air control:** while swinging or carrying momentum, the movement keys can build horizontal speed up to 0.3 blocks per tick. At higher speeds, steer to turn or press against your direction of travel to brake.
 - **Ground:** on the ground the rope pays out freely, so you can walk around while hooked. It stays slack when you step off the ground until you drop `rope.ground-slack-drop` below where you left it, so steps, stairs, and small hops never yank you back. Running off a real ledge still starts a swing. Hooks retract on their own after `hooks.auto-retract-ground-ticks`.
 
 Hooks break when the anchor block is broken, the hooked entity dies, or the entity pulls too far away. Mobs, boats, minecarts, and item frames can be hooked. Other players can only be hooked when `hooks.hook-players` is on.
@@ -137,7 +138,7 @@ All values are in blocks and ticks (20 ticks = 1 second). Apply changes with `/h
 | `rope.ground-slack-drop` | `1.25` | How far you can drop after stepping off the ground before the rope tightens |
 | `rope.block` / `rope.width` | `GRAY_CONCRETE` / `0.05` | Rope appearance |
 | `movement.air-drag` | `0.995` | Velocity kept per tick while swinging (vanilla is 0.91) |
-| `movement.steer-acceleration` | `0.04` | W/A/S/D air control |
+| `movement.steer-acceleration` | `0.04` | How quickly W/A/S/D changes your motion. Momentum flight uses half this value |
 | `movement.max-speed` | `3.0` | Speed cap |
 | `movement.momentum-ticks` | `40` | Momentum carry after letting go |
 | `gas.capacity` | `100.0` | Tank size |

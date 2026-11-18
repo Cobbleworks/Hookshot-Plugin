@@ -14,6 +14,7 @@ public final class RopePhysics {
     /** Largest velocity change a single rope correction may apply per tick. */
     public static final double MAX_CORRECTION = 1.0;
     private static final double REEL_STOP_DISTANCE = 0.05;
+    private static final double AIR_STEERING_SPEED = 0.30;
 
     private RopePhysics() {
     }
@@ -98,6 +99,19 @@ public final class RopePhysics {
         Vector rightDir = new Vector(-cos, 0, -sin);
         Vector result = forwardDir.multiply(forwardAmount).add(rightDir.multiply(rightAmount));
         return result.normalize().multiply(acceleration);
+    }
+
+    /** Applies horizontal steering, limiting speed gained from the keys to near sprint speed. */
+    static void applyAirSteering(Vector velocity, Vector steering) {
+        if (steering.lengthSquared() == 0.0) {
+            return;
+        }
+
+        Vector horizontal = new Vector(velocity.getX(), 0.0, velocity.getZ());
+        // At higher speeds the keys can turn or brake the player's existing momentum.
+        double speedLimit = Math.max(horizontal.length(), AIR_STEERING_SPEED);
+        clampSpeed(horizontal.add(steering), speedLimit);
+        velocity.setX(horizontal.getX()).setZ(horizontal.getZ());
     }
 
     /**

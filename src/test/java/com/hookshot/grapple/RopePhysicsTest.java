@@ -136,6 +136,49 @@ class RopePhysicsTest {
     }
 
     @Test
+    void holdingForwardAfterReleaseDoesNotBuildSpeed() {
+        Vector velocity = new Vector(0, 0.4, 0.8);
+        Vector forward = RopePhysics.steering(true, false, false, false, 0f, 0.25);
+        double airDrag = 0.995;
+
+        for (int tick = 0; tick < 40; tick++) {
+            RopePhysics.applyGravityAndDrag(velocity, airDrag);
+            RopePhysics.applyAirSteering(velocity, forward);
+        }
+
+        assertEquals(0.8 * Math.pow(airDrag, 40), velocity.getZ(), EPS);
+    }
+
+    @Test
+    void sidewaysAirSteeringTurnsMomentumAtConstantSpeed() {
+        Vector velocity = new Vector(0, -0.6, 0.8);
+        Vector right = RopePhysics.steering(false, false, false, true, 0f, 0.04);
+
+        for (int tick = 0; tick < 20; tick++) {
+            RopePhysics.applyAirSteering(velocity, right);
+        }
+
+        assertTrue(velocity.getX() < -0.5);
+        assertEquals(0.8, Math.hypot(velocity.getX(), velocity.getZ()), EPS);
+        assertEquals(-0.6, velocity.getY(), EPS);
+    }
+
+    @Test
+    void lowSpeedAirControlIsCappedAndCanReverseDirection() {
+        Vector velocity = new Vector();
+        Vector forward = new Vector(0, 0, 0.2);
+        RopePhysics.applyAirSteering(velocity, forward);
+        RopePhysics.applyAirSteering(velocity, forward);
+        assertEquals(0.3, velocity.getZ(), EPS);
+
+        Vector backward = new Vector(0, 0, -0.2);
+        RopePhysics.applyAirSteering(velocity, backward);
+        assertEquals(0.1, velocity.getZ(), EPS);
+        RopePhysics.applyAirSteering(velocity, backward);
+        assertEquals(-0.1, velocity.getZ(), EPS);
+    }
+
+    @Test
     void clampSpeedOnlyReducesFastVectors() {
         Vector fast = new Vector(3, 4, 0);
         RopePhysics.clampSpeed(fast, 2.5);

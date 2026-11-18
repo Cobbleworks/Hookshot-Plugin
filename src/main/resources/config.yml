@@ -69,7 +69,9 @@ rope:
 movement:
   # Velocity kept per tick while on a rope or carrying momentum (vanilla air is 0.91).
   air-drag: 0.995
-  # Air control from W/A/S/D while swinging. Momentum flight after a release gets half.
+  # W/A/S/D response while reeling or swinging. Momentum flight gets half.
+  # While swinging or carrying momentum, keys build horizontal speed up to 0.3 blocks/tick.
+  # Above that speed, they turn or brake your existing motion.
   steer-acceleration: 0.04
   # Hard speed cap.
   max-speed: 3.0
