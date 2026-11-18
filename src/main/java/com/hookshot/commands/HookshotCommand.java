@@ -44,7 +44,7 @@ public final class HookshotCommand implements CommandExecutor, TabCompleter {
     private void sendHelp(CommandSender sender, String label) {
         sender.sendMessage(Component.text("=== Grapple Harness ===", NamedTextColor.GOLD));
         sender.sendMessage(Component.text("Wear the harness as leggings, then:", NamedTextColor.GRAY));
-        line(sender, "Swap Hands (F)", "fire a hook where you aim (up to "
+        line(sender, "Right-click with a sword", "fire a hook where you aim (up to "
                 + plugin.settings().maxHooks() + " at once)");
         line(sender, "Hold Sneak", "reel in toward your hooks (uses gas)");
         line(sender, "Jump in mid-air", "let go and keep your momentum");

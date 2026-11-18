@@ -6,14 +6,21 @@ import com.hookshot.grapple.GrappleManager;
 import com.hookshot.harness.HarnessItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.Tag;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -22,7 +29,7 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInputEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -33,8 +40,12 @@ public final class HarnessListener implements Listener {
     /** Teleports shorter than this (e.g. server position corrections) keep the hooks. */
     private static final double TELEPORT_RELEASE_DISTANCE = 4.0;
 
+    /** Right-clicks closer together than this are treated as the button being held. */
+    private static final int HOLD_REPEAT_TICKS = 5;
+
     private final GrappleManager grapple;
     private final HarnessItem harness;
+    private final Map<UUID, Integer> lastRightClick = new HashMap<>();
 
     public HarnessListener(GrappleManager grapple, HarnessItem harness) {
         this.grapple = grapple;
@@ -43,13 +54,34 @@ public final class HarnessListener implements Listener {
 
     // ------------------------------------------------------------------ controls
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onSwapHands(PlayerSwapHandItemsEvent event) {
-        Player player = event.getPlayer();
-        if (grapple.canUse(player)) {
-            event.setCancelled(true);
-            grapple.fire(player);
+    /**
+     * Right-click with a sword fires a hook. Not ignoreCancelled: Bukkit fires RIGHT_CLICK_AIR
+     * already cancelled. Holding the button auto-repeats every 4 ticks, so a click that follows the
+     * previous one within {@link #HOLD_REPEAT_TICKS} counts as a hold and is ignored.
+     */
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onRightClick(PlayerInteractEvent event) {
+        Action action = event.getAction();
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+            return;
         }
+        Player player = event.getPlayer();
+        if (!Tag.ITEMS_SWORDS.isTagged(player.getInventory().getItemInMainHand().getType())
+                || !grapple.canUse(player)) {
+            return;
+        }
+        // Block the click from opening/using the block or the off-hand item.
+        event.setUseInteractedBlock(Event.Result.DENY);
+        event.setUseItemInHand(Event.Result.DENY);
+        if (event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+        int now = Bukkit.getCurrentTick();
+        Integer last = lastRightClick.put(player.getUniqueId(), now);
+        if (last != null && now - last <= HOLD_REPEAT_TICKS) {
+            return;
+        }
+        grapple.fire(player);
     }
 
     @EventHandler
@@ -74,7 +106,7 @@ public final class HarnessListener implements Listener {
         if (harness.isHarness(event.getNewItem()) && !harness.isHarness(event.getOldItem())
                 && player.hasPermission("hookshot.use")) {
             player.sendMessage(Component.text("Harness on. ", NamedTextColor.GOLD)
-                    .append(Component.text("F", NamedTextColor.YELLOW))
+                    .append(Component.text("Right-click with sword", NamedTextColor.YELLOW))
                     .append(Component.text(" fire hook  ", NamedTextColor.GRAY))
                     .append(Component.text("Sneak", NamedTextColor.YELLOW))
                     .append(Component.text(" reel  ", NamedTextColor.GRAY))
@@ -140,6 +172,7 @@ public final class HarnessListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         grapple.remove(event.getPlayer());
+        lastRightClick.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler

@@ -56,7 +56,7 @@ public final class HarnessItem {
         meta.lore(List.of(
                 plain("Wear as leggings to grapple.", NamedTextColor.GRAY),
                 Component.empty(),
-                control("Swap Hands (F)", "fire a hook"),
+                control("Right-click with sword", "fire a hook"),
                 control("Hold Sneak", "reel in (uses gas)"),
                 control("Jump in mid-air", "let go / gas burst"),
                 control("W A S D in mid-air", "steer your swing")));

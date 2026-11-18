@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Fire Control**: hooks now fire with right-click while holding a sword instead of the Swap Hands key (F), which swaps items normally again
+
 ## [2.0.0] - 2026-11-18
 
 Hookshot 2.0 replaces the fishing-rod grapple with a wearable **Grapple Harness** and a rope simulation that runs every tick. You can now swing, reel in, steer in mid-air, and keep your momentum, with both hands free for combat.

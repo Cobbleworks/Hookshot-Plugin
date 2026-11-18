@@ -56,7 +56,7 @@ Hookshot adds a **Grapple Harness**: leggings that fire hooks from the hips. Bot
 2. Stop the server and copy the JAR into `plugins/`.
 3. Start the server to generate `plugins/Hookshot/config.yml`.
 4. Craft a Grapple Harness, or run `/hookshot give`.
-5. Put the harness on in the leggings slot, aim at a wall, and press **F**.
+5. Put the harness on in the leggings slot, hold a sword, aim at a wall, and **right-click**.
 
 To get the feel for it, fire a hook at a high wall, walk off a ledge, and let the rope swing you. Then hold **Sneak** to reel in, and press **Jump** at the top of a swing to let go.
 
@@ -64,14 +64,14 @@ To get the feel for it, fire a hook at a high wall, walk off a ledge, and let th
 
 | Input | Action |
 |-------|--------|
-| **Swap Hands** (default `F`) | Fire a hook where you aim. With two hooks out, a new one replaces the oldest. |
+| **Right-click** with a sword | Fire a hook where you aim (click again for each hook; holding the button does not repeat). With two hooks out, a new one replaces the oldest. |
 | **Hold Sneak** | Reel in toward your hooks (uses gas). Fully reeled in, you hang on the spot. |
 | **Jump** in mid-air with hooks out | Let go and keep your momentum |
 | **Jump** in mid-air with no hooks out | Gas burst in the direction you look |
 | **W / A / S / D** in mid-air | Steer and pump your swing |
 | **Attack** | Normal melee, with bonus damage at high speed |
 
-While the harness is worn, the Swap Hands key fires hooks instead of swapping items. You can still move items to the off-hand through the inventory.
+While the harness is worn and you hold any sword, right-click fires hooks instead of interacting with blocks (doors, chests, etc.). Switch to another item to use blocks normally.
 
 The action bar shows your gas tank and one diamond per hook slot:
 
