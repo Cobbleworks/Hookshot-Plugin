@@ -21,6 +21,8 @@ class HookshotSettingsTest {
         assertEquals(40.0, settings.range());
         assertEquals(2, settings.maxHooks());
         assertEquals(100.0, settings.gasCapacity());
+        assertTrue(settings.releaseOnSneakRelease());
+        assertEquals(1.25, settings.groundSlackDrop());
         assertTrue(settings.recipeEnabled());
         assertEquals(3, settings.recipeShape().size());
         // every character used in the shape has an ingredient

@@ -139,22 +139,59 @@ public final class GrappleManager {
         state.hooks.add(hook);
     }
 
-    /** Called for every input change; reacts to the jump key being pressed. */
+    /**
+     * Called for every input change. Releasing Sneak after reeling lets go; pressing Jump lets go
+     * (on the ground too), or bursts in mid-air when no hooks are out.
+     */
     public void handleInput(Player player, Input input) {
         GrappleState state = states.get(player.getUniqueId());
         if (state == null) {
             return;
         }
         boolean jump = input.isJump();
-        boolean pressed = jump && !state.lastJumpInput;
+        boolean jumpPressed = jump && !state.lastJumpInput;
         state.lastJumpInput = jump;
-        if (!pressed || isGrounded(player) || player.isFlying() || !canUse(player)) {
+        boolean sneak = input.isSneak();
+        boolean sneakPressed = sneak && !state.lastSneakInput;
+        boolean sneakReleased = !sneak && state.lastSneakInput;
+        state.lastSneakInput = sneak;
+        if (!canUse(player)) {
+            state.sneakArmed = false;
+            return;
+        }
+
+        if (sneakPressed && state.hasAttachedHook()) {
+            state.sneakArmed = true;
+        }
+        if (sneakReleased) {
+            boolean armed = state.sneakArmed;
+            state.sneakArmed = false;
+            if (armed && settings.releaseOnSneakRelease() && state.hasHooks()) {
+                letGo(player, state);
+                return;
+            }
+        }
+
+        if (!jumpPressed || player.isFlying()) {
             return;
         }
         if (state.hasHooks()) {
-            releaseAll(player, state, true);
-        } else {
+            letGo(player, state);
+        } else if (!isGrounded(player)) {
             burst(player, state);
+        }
+    }
+
+    /**
+     * Player-initiated release. In mid-air the swing's momentum carries on; from the ground or a
+     * slack rope the player just keeps vanilla movement, so a normal jump stays a normal jump.
+     */
+    private void letGo(Player player, GrappleState state) {
+        boolean slack = state.ropeSlack || isGrounded(player);
+        releaseAll(player, state, true);
+        if (slack && state.mode == GrappleState.Mode.HOOKED) {
+            state.mode = GrappleState.Mode.IDLE;
+            state.commanding = false;
         }
     }
 
@@ -269,6 +306,11 @@ public final class GrappleManager {
             state.outOfGasWarned = true;
             player.playSound(player, Sound.BLOCK_FIRE_EXTINGUISH, 0.5f, 1.8f);
         }
+        if (wantsReel) {
+            // Covers a hook landing while Sneak is already held: that reel also ends on release.
+            state.sneakArmed = true;
+        }
+        updateSlack(state, position, onGround, reeling);
 
         if (attached) {
             state.mode = GrappleState.Mode.HOOKED;
@@ -276,8 +318,8 @@ public final class GrappleManager {
             if (!onGround) {
                 enableManagedFlight(player, state);
             }
-            if (onGround && !reeling) {
-                // On the ground the spool pays out freely, so walking around is never blocked.
+            if (state.ropeSlack) {
+                // The spool pays out freely, so walking around (and over steps) is never blocked.
                 for (Hook hook : state.hooks) {
                     if (hook.isAttached()) {
                         hook.ropeLength = Math.max(settings.minRopeLength(), hip.distance(hook.anchor()));
@@ -298,7 +340,8 @@ public final class GrappleManager {
             restoreFlight(player, state);
             if (state.mode == GrappleState.Mode.HOOKED) {
                 // Hooks gone (released, replaced, or snapped): carry momentum if airborne.
-                state.mode = onGround ? GrappleState.Mode.IDLE : GrappleState.Mode.FREE_FLIGHT;
+                // A slack rope was never swinging the player, so there is no momentum to carry.
+                state.mode = onGround || state.ropeSlack ? GrappleState.Mode.IDLE : GrappleState.Mode.FREE_FLIGHT;
                 state.freeFlightTicks = 0;
                 if (!state.commanding) {
                     state.simulatedVelocity = state.smoothedVelocity();
@@ -316,6 +359,39 @@ public final class GrappleManager {
         updateHud(player, state);
     }
 
+    /**
+     * The rope is slack on the ground and stays slack after stepping off until the player drops
+     * {@code rope.ground-slack-drop} below the takeoff height. Steps, stairs, and short hops
+     * therefore stay vanilla movement, while running off a real ledge still starts a swing.
+     * Reeling always tightens the rope.
+     */
+    private void updateSlack(GrappleState state, Vector position, boolean onGround, boolean reeling) {
+        if (reeling) {
+            state.ropeSlack = false;
+        } else if (onGround) {
+            state.ropeSlack = true;
+            state.slackTakeoffY = position.getY();
+        } else if (state.ropeSlack && position.getY() < state.slackTakeoffY - settings.groundSlackDrop()) {
+            state.ropeSlack = false;
+        }
+    }
+
+    /** Every anchored rope is at minimum length and the player is hanging at it. */
+    private boolean isFullyReeled(GrappleState state, Vector hip) {
+        boolean any = false;
+        for (Hook hook : state.hooks) {
+            if (!hook.isAttached()) {
+                continue;
+            }
+            if (hook.ropeLength > settings.minRopeLength() + 1.0E-3
+                    || hip.distance(hook.anchor()) > settings.minRopeLength() + 0.4) {
+                return false;
+            }
+            any = true;
+        }
+        return any;
+    }
+
     private void simulateHooked(Player player, GrappleState state, Vector hip, Input input, boolean onGround,
                                 boolean reeling) {
         Vector velocity = state.commanding ? state.simulatedVelocity.clone() : state.smoothedVelocity();
@@ -325,6 +401,8 @@ public final class GrappleManager {
         }
 
         if (reeling) {
+            // Holding Sneak to hang at full reel is free; only actually shortening a rope uses gas.
+            boolean fullyReeled = isFullyReeled(state, hip);
             Vector pull = new Vector();
             for (Hook hook : state.hooks) {
                 if (hook.isAttached()) {
@@ -337,9 +415,11 @@ public final class GrappleManager {
             if (pull.lengthSquared() > 1.0E-6) {
                 velocity.add(pull.normalize().multiply(settings.reelAcceleration()));
             }
-            state.gas = Math.max(0.0, state.gas - settings.reelGasCost());
-            state.gasRegenDelay = settings.gasRegenDelayTicks();
-            reelEffects(player, state, hip, velocity);
+            if (!fullyReeled) {
+                state.gas = Math.max(0.0, state.gas - settings.reelGasCost());
+                state.gasRegenDelay = settings.gasRegenDelayTicks();
+                reelEffects(player, state, hip, velocity);
+            }
         }
 
         boolean perched = false;
@@ -451,6 +531,8 @@ public final class GrappleManager {
                     hook.ropeLength = Math.clamp(hip.distance(hook.anchor()), settings.minRopeLength(),
                             settings.maxRopeLength());
                     state.groundedHookTicks = 0;
+                    // A hook landing mid-air starts taut; standing on the ground slackens it again.
+                    state.ropeSlack = false;
                     attachEffects(player, hook);
                 }
                 case ATTACHED -> {
@@ -475,6 +557,7 @@ public final class GrappleManager {
             hook.remove();
         }
         state.hooks.clear();
+        state.sneakArmed = false;
         restoreFlight(player, state);
         if (playSound && hadHooks) {
             sound(player.getLocation(), Sound.ITEM_LEAD_UNTIED, 0.8f, 1.2f);

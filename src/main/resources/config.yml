@@ -27,6 +27,12 @@ recipe:
     L: LEATHER_LEGGINGS   # the harness base
     W: WIND_CHARGE        # gas canisters
 
+# ===== CONTROLS =====
+controls:
+  # Letting go of Sneak after reeling also lets go of the hooks, so one key reels and releases.
+  # Set to false to keep the rope out after reeling (then only Jump lets go).
+  release-on-sneak-release: true
+
 # ===== HOOKS =====
 hooks:
   # Maximum distance a hook can be fired.
@@ -52,6 +58,9 @@ rope:
   reel-speed: 0.6
   # Acceleration toward the anchor while reeling.
   reel-acceleration: 0.15
+  # After stepping off the ground the rope stays slack until you drop this far below where
+  # you left it, so steps, stairs, and small hops never yank you back toward the anchor.
+  ground-slack-drop: 1.25
   # Block used to render the rope, and its thickness in blocks.
   block: GRAY_CONCRETE
   width: 0.05

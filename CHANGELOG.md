@@ -9,6 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 - **Fire Control**: hooks now fire with right-click while holding a sword instead of the Swap Hands key (F), which swaps items normally again
+- **Sneak Release**: letting go of Sneak after reeling now lets go of the hooks, so one key reels and releases (`controls.release-on-sneak-release`)
+- **Jump Release On The Ground**: Jump now lets go of hooks while standing too, instead of being ignored until you were airborne
+- **Free Hanging**: holding Sneak at full reel no longer uses gas
+
+### Fixed
+
+- **Ground Rope Yank**: walking over steps, stairs, or small drops while hooked no longer pulls you back toward the anchor; the rope stays slack until you drop `rope.ground-slack-drop` below where you left the ground
 
 ## [2.0.0] - 2026-11-18
 

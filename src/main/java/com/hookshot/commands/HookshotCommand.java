@@ -47,7 +47,12 @@ public final class HookshotCommand implements CommandExecutor, TabCompleter {
         line(sender, "Right-click with a sword", "fire a hook where you aim (up to "
                 + plugin.settings().maxHooks() + " at once)");
         line(sender, "Hold Sneak", "reel in toward your hooks (uses gas)");
-        line(sender, "Jump in mid-air", "let go and keep your momentum");
+        if (plugin.settings().releaseOnSneakRelease()) {
+            line(sender, "Release Sneak", "let go and keep your momentum");
+            line(sender, "Jump", "let go without reeling first");
+        } else {
+            line(sender, "Jump", "let go and keep your momentum");
+        }
         line(sender, "Jump in mid-air, no hooks", "gas burst where you look");
         line(sender, "W A S D in mid-air", "steer and pump your swing");
         sender.sendMessage(Component.text("Gas refills on the ground. Fast melee hits deal bonus damage.",

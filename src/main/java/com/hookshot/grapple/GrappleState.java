@@ -46,7 +46,18 @@ final class GrappleState {
 
     boolean managedFlight;
     boolean lastJumpInput;
+    boolean lastSneakInput;
+    /** Sneak was held while a hook was anchored, so letting go of Sneak lets go of the hooks. */
+    boolean sneakArmed;
     boolean outOfGasWarned;
+
+    /**
+     * The spool pays out freely: true on the ground and for a short drop after stepping off it,
+     * so walking over steps and stairs never turns into a rope yank.
+     */
+    boolean ropeSlack;
+    /** Feet height where the player last stood while the rope was slack. */
+    double slackTakeoffY;
 
     GrappleState(double gas) {
         this.gas = gas;
