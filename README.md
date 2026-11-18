@@ -133,7 +133,7 @@ All values are in blocks and ticks (20 ticks = 1 second). Apply changes with `/h
 | `hooks.hook-entities` / `hooks.hook-players` | `true` / `false` | What hooks may anchor to besides blocks |
 | `hooks.auto-retract-ground-ticks` | `40` | Retract after standing this long (0 = never) |
 | `rope.min-length` | `1.5` | Shortest reeled rope |
-| `rope.reel-speed` / `rope.reel-acceleration` | `0.6` / `0.15` | Top pull speed and how quickly the reel reaches it |
+| `rope.reel-speed` / `rope.reel-acceleration` | `0.8` / `0.3` | Top pull speed and how quickly the reel reaches it |
 | `rope.ground-slack-drop` | `1.25` | How far you can drop after stepping off the ground before the rope tightens |
 | `rope.block` / `rope.width` | `GRAY_CONCRETE` / `0.05` | Rope appearance |
 | `movement.air-drag` | `0.995` | Velocity kept per tick while swinging (vanilla is 0.91) |

@@ -65,7 +65,7 @@ class RopePhysicsTest {
         for (int tick = 0; tick < 10; tick++) {
             double distance = position.distance(anchor);
             Vector remaining = RopePhysics.reelDisplacement(position, anchor, minLength);
-            Vector nextVelocity = RopePhysics.reelVelocity(remaining, velocity, steering, 0.6, 0.15);
+            Vector nextVelocity = RopePhysics.reelVelocity(remaining, velocity, steering, 0.8, 0.3);
             assertTrue(nextVelocity.length() <= velocity.length() + EPS);
             position.add(nextVelocity);
             assertTrue(position.distance(anchor) >= minLength);
@@ -82,8 +82,8 @@ class RopePhysicsTest {
         Vector remaining = new Vector(10, 0, 0);
         Vector velocity = new Vector(-3, 0, 0);
 
-        for (double expectedSpeed : new double[]{0.15, 0.30, 0.45, 0.60, 0.60}) {
-            velocity = RopePhysics.reelVelocity(remaining, velocity, new Vector(), 0.6, 0.15);
+        for (double expectedSpeed : new double[]{0.3, 0.6, 0.8, 0.8}) {
+            velocity = RopePhysics.reelVelocity(remaining, velocity, new Vector(), 0.8, 0.3);
             assertEquals(expectedSpeed, velocity.getX(), EPS);
         }
     }
@@ -98,7 +98,7 @@ class RopePhysicsTest {
         for (int tick = 0; tick < 10; tick++) {
             Vector remaining = RopePhysics.reelDisplacement(position, left, 1.5)
                     .add(RopePhysics.reelDisplacement(position, right, 1.5)).multiply(0.5);
-            velocity = RopePhysics.reelVelocity(remaining, velocity, new Vector(), 0.6, 0.15);
+            velocity = RopePhysics.reelVelocity(remaining, velocity, new Vector(), 0.8, 0.3);
             position.add(velocity);
         }
 

@@ -22,6 +22,8 @@ class HookshotSettingsTest {
         assertEquals(2, settings.maxHooks());
         assertEquals(100.0, settings.gasCapacity());
         assertTrue(settings.releaseOnSneakRelease());
+        assertEquals(0.8, settings.reelSpeed());
+        assertEquals(0.3, settings.reelAcceleration());
         assertEquals(1.25, settings.groundSlackDrop());
         assertEquals(1.0, settings.burstRedirect());
         assertTrue(settings.recipeEnabled());
