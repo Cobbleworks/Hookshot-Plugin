@@ -154,8 +154,28 @@ public final class HarnessListener implements Listener {
             at.getWorld().playSound(at, Sound.ENTITY_PLAYER_ATTACK_CRIT, 1.0f, 0.8f);
         }
         if (settings.particles()) {
-            at.getWorld().spawnParticle(Particle.SWEEP_ATTACK, at, 1);
+            if (!Tag.ITEMS_SWORDS.isTagged(player.getInventory().getItemInMainHand().getType())) {
+                at.getWorld().spawnParticle(Particle.SWEEP_ATTACK, at, 1);
+            }
             at.getWorld().spawnParticle(Particle.CRIT, at, 14, 0.3, 0.3, 0.3, 0.3);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onSwordHit(EntityDamageByEntityEvent event) {
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK || event.getFinalDamage() <= 0
+                || !(event.getDamager() instanceof Player player) || !grapple.canUse(player)
+                || !Tag.ITEMS_SWORDS.isTagged(player.getInventory().getItemInMainHand().getType())) {
+            return;
+        }
+        HookshotSettings settings = grapple.settings();
+        Entity victim = event.getEntity();
+        Location at = victim.getLocation().add(0, victim.getHeight() * 0.5, 0);
+        if (settings.particles()) {
+            at.getWorld().spawnParticle(Particle.SWEEP_ATTACK, at, 1);
+        }
+        if (settings.sounds()) {
+            at.getWorld().playSound(at, Sound.ENTITY_PLAYER_ATTACK_SWEEP, 0.7f, 1.35f);
         }
     }
 

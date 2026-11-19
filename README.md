@@ -70,7 +70,7 @@ To get the feel for it, fire a hook at a high wall, walk off a ledge, and let th
 | **Jump** with hooks out | Let go: in mid-air you keep your momentum, on the ground you just jump |
 | **Jump** in mid-air with no hooks out | Gas burst in the direction you look. It cancels motion going elsewhere, so you can change course mid-swing |
 | **W / A / S / D** in mid-air | Steer while reeling, swinging, or carrying momentum |
-| **Attack** | Normal melee, with bonus damage at high speed |
+| **Attack** | Extended sword reach and bonus melee damage at high speed |
 
 While the harness is worn and you hold any sword, right-click fires hooks instead of interacting with blocks (doors, chests, etc.). Switch to another item to use blocks normally.
 
@@ -103,6 +103,8 @@ Hooks break when the anchor block is broken, the hooked entity dies, or the enti
 Reeling uses gas every tick (hanging at full reel is free), and a mid-air burst uses a chunk at once. A burst sends you where you look: speed already heading that way is kept, and motion in other directions is cancelled (`gas.burst-redirect`), so a burst can overpower a hard swing to change course. Swinging and firing hooks are free. Gas refills while you stand on the ground, after a short delay. When the tank is empty you can still swing, but you can't reel or burst.
 
 ### **Combat**
+
+With the harness equipped, swords gain 0.75 blocks of reach. Landed sword hits play a slice sound and show a sweep particle, controlled by `effects.sounds` and `effects.particles`.
 
 Melee hits land harder when you are moving fast. Above `combat.speed-threshold` (sprinting is about 0.28 blocks/tick), every extra block per tick adds `combat.bonus-per-speed` damage, capped at `combat.max-bonus`. Wearing the harness also scales fall damage by `combat.fall-damage-multiplier`, and you take no fall damage while hanging on a rope.
 

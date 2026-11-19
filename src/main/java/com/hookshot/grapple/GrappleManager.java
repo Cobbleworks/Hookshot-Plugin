@@ -13,7 +13,11 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.Tag;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
@@ -49,12 +53,14 @@ public final class GrappleManager {
 
     /** Extra distance an anchored entity may pull away before the rope snaps. */
     private static final double SNAP_SLACK = 8.0;
+    private static final double SWORD_REACH_BONUS = 0.75;
     private static final int HUD_LINGER_TICKS = 40;
     private static final int HUD_SEGMENTS = 20;
 
     private final Plugin plugin;
     private final HarnessItem harness;
     private final NamespacedKey managedFlightKey;
+    private final AttributeModifier swordReachModifier;
     private final Map<UUID, GrappleState> states = new HashMap<>();
     private HookshotSettings settings;
     private BlockData ropeBlockData;
@@ -65,6 +71,8 @@ public final class GrappleManager {
         this.plugin = plugin;
         this.harness = harness;
         this.managedFlightKey = new NamespacedKey(plugin, "managed_flight");
+        this.swordReachModifier = new AttributeModifier(new NamespacedKey(plugin, "sword_reach"),
+                SWORD_REACH_BONUS, AttributeModifier.Operation.ADD_NUMBER);
         applySettings(settings);
     }
 
@@ -207,6 +215,7 @@ public final class GrappleManager {
 
     /** Forgets the player completely and restores any flight ability changes. */
     public void remove(Player player) {
+        updateSwordReach(player, false);
         GrappleState state = states.remove(player.getUniqueId());
         if (state != null) {
             releaseAll(player, state, false);
@@ -255,7 +264,10 @@ public final class GrappleManager {
         tickCounter++;
         for (Player player : Bukkit.getOnlinePlayers()) {
             GrappleState state = states.get(player.getUniqueId());
-            if (!canUse(player)) {
+            boolean canUseHarness = canUse(player);
+            updateSwordReach(player, canUseHarness
+                    && Tag.ITEMS_SWORDS.isTagged(player.getInventory().getItemInMainHand().getType()));
+            if (!canUseHarness) {
                 if (state != null && (!state.hooks.isEmpty() || state.mode != GrappleState.Mode.IDLE)) {
                     releaseAll(player, state, false);
                     state.mode = GrappleState.Mode.IDLE;
@@ -268,6 +280,19 @@ public final class GrappleManager {
                 state = state(player);
             }
             tickPlayer(player, state);
+        }
+    }
+
+    private void updateSwordReach(Player player, boolean enabled) {
+        AttributeInstance reach = player.getAttribute(Attribute.ENTITY_INTERACTION_RANGE);
+        if (reach == null) {
+            return;
+        }
+        boolean hasModifier = reach.getModifier(swordReachModifier.getKey()) != null;
+        if (enabled && !hasModifier) {
+            reach.addTransientModifier(swordReachModifier);
+        } else if (!enabled && hasModifier) {
+            reach.removeModifier(swordReachModifier.getKey());
         }
     }
 
